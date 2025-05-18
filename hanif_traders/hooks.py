@@ -5,6 +5,18 @@ app_description = "Custom App for Hanif Traders"
 app_email = "salman.hanif917@gmail.com"
 app_license = "mit"
 
+fixtures = [
+    {"doctype": "Custom Field"},
+    {"doctype": "Property Setter"},
+    {"doctype": "Client Script"},
+    {"doctype": "Server Script"},
+    {"doctype": "DocType", "filters": [["name", "in", [
+        "Warranty", "Customer Profile", "Consolidated Report", "Customer GL Ledger"
+    ]]]}
+]
+
+
+
 # Apps
 # ------------------
 
