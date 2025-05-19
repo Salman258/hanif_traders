@@ -1,0 +1,68 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Journal Entry",
+  "enabled": 1,
+  "modified": "2023-09-28 11:53:36.551374",
+  "module": "Accounts",
+  "name": "Party Name",
+  "script": "frappe.ui.form.on('Journal Entry', {\n\trefresh(frm) {\n\t\t// your code here\n\t}\n})\n\nfrappe.ui.form.on('Journal Entry Account', {\n party_name: function(frm) {\n     \n    frm.add_fetch(party_type, 'custom_display_name', 'party_name');\n }\n       \n})",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Delivery Note",
+  "enabled": 0,
+  "modified": "2024-03-07 18:58:19.958855",
+  "module": null,
+  "name": "Auto Invoice",
+  "script": "frappe.ui.form.on('Delivery Note', {\n\ton_submit(frm) {\n\t\tcur_frm.cscript.make_sales_invoice();\n\t}\n});",
+  "view": "List"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Complain",
+  "enabled": 1,
+  "modified": "2024-10-06 23:21:32.382268",
+  "module": "Support",
+  "name": "SMS Notification",
+  "script": "var csc = Math.floor(1000 + Math.random() * 9000);\nfrappe.ui.form.on('Complain', {\n    after_workflow_action: (frm) => {\n        if(frm.doc.workflow_state === 'Assigned'){\n            frm.set_value(\"complain_csc\", csc);\n            console.log(\"3 \"+frm.doc.workflow_state +\" \" + frm.doc.complain_csc);\n            frm.save();\n            \n        }\n    },\n    refresh(frm) {\n\t\tfrm.add_custom_button('Send SMS', function(){\n\t\t\tfrm.trigger(\"send_sms\");\n\t\t});\n\t},\n\tsend_sms: function(frm){\n\t    var To = frm.doc.complainer_phone.replace('+92-','0');\n\t    var Cno =  frm.doc.name;\n\t    var Message =  'Dear customer your complain has been registered at GFC Service Center. Your complain no is'+' '+Cno+' '+'Estimated resolution time is 48 Hours';\n\n       frappe.call({\n            method: \"frappe.core.doctype.sms_settings.sms_settings.send_sms\",\n            args: {\n                receiver_list: [To],\n                msg: Message,\n            },callback: function(r) {\n                if(r.exc) {\n                msgprint(\"1\"+r.exc); return;\n                msgprint(\"2\" + message)}\n            }\n       });\n\t}\n});",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Item",
+  "enabled": 1,
+  "modified": "2025-04-10 13:53:20.772112",
+  "module": null,
+  "name": "Product Bundle from Item",
+  "script": "frappe.ui.form.on('Item', {\n    refresh: function(frm) {\n        if (!frm.doc.__islocal && !frm.doc.is_template && frm.doc.is_stock_item === 0) {\n\n            frm.add_custom_button(\"Create Product Bundle\", function () {\n\n                frappe.call({\n                    method: \"frappe.client.get_list\",\n                    args: {\n                        doctype: \"Product Bundle\",\n                        filters: {\n                            new_item_code: frm.doc.name\n                        },\n                        limit_page_length: 1\n                    },\n                    callback: function(r) {\n                        if (r.message && r.message.length > 0) {\n                            frappe.msgprint({\n                                title: \"Bundle Already Exists\",\n                                message: \"A product bundle already exists for this item.\",\n                                indicator: \"orange\"\n                            });\n                        } else {\n                            // Create the new Product Bundle doc and route to it\n                            frappe.model.with_doctype(\"Product Bundle\", function () {\n                                let doc = frappe.model.get_new_doc(\"Product Bundle\");\n                                doc.new_item_code = frm.doc.name;\n                                frappe.set_route(\"Form\", \"Product Bundle\", doc.name);\n                            });\n                        }\n                    }\n                });\n\n            }, __(\"Actions\"));\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Purchase Receipt",
+  "enabled": 0,
+  "modified": "2025-04-12 15:15:36.782933",
+  "module": null,
+  "name": "Bundle item total on purchase receipt",
+  "script": "frappe.ui.form.on('Purchase Receipt', {\n    after_save(frm) {\n        let total_qty = 0;\n\n        (frm.doc.custom_packed_items || []).forEach(row => {\n            total_qty += flt(row.qty);\n        });\n\n        frm.set_value(\"custom_total_bundle_item_quantity\", total_qty);\n\n        // Save again to persist the value (if not submitted)\n        if (frm.doc.docstatus === 0) {\n            frm.save();\n        }\n    }\n});\n",
+  "view": "Form"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Warranty",
+  "enabled": 1,
+  "modified": "2025-04-24 13:21:46.280830",
+  "module": null,
+  "name": "Update Balance In Warranty Table",
+  "script": "frappe.ui.form.on('Warranty', {\n    validate: function(frm) {\n        let total_received = 0;\n        let total_claimed = 0;\n\n        (frm.doc.warranty_item_detail || []).forEach(row => {\n            // Calculate and update balance for each row\n            row.balance_quantity = flt(row.quantity_received) - flt(row.quantity_claimed);\n            total_received += flt(row.quantity_received);\n            total_claimed += flt(row.quantity_claimed);\n        });\n\n        frm.set_value('total_items_received', total_received);\n        frm.set_value('total_items_claimed', total_claimed);\n        frm.set_value('total_items_balanced', total_received - total_claimed);\n\n        frm.refresh_field(\"warranty_item_detail\");\n    }\n});\n",
+  "view": "Form"
+ }
+]
