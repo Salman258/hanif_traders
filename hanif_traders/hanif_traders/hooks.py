@@ -6,17 +6,12 @@ app_email = "salman.hanif917@gmail.com"
 app_license = "mit"
 
 fixtures = [
-    {"dt": "Custom Field"},
-    {"dt": "Client Script"},
-    {"dt": "Server Script"},
-    {"dt": "Property Setter"},
-    {"dt": "Customize Form"},
-    {"dt": "DocType", "filters": [["name", "in", [
-        "Customer Profile",
-        "Consolidated Report",
-        "Consolidated Sales Metric",
-        "Customer GL Ledger",
-        "Delivery Detail"
+    {"doctype": "Custom Field"},
+    {"doctype": "Property Setter"},
+    {"doctype": "Client Script"},
+    {"doctype": "Server Script"},
+    {"doctype": "DocType", "filters": [["name", "in", [
+        "Warranty", "Customer Profile", "Consolidated Report", "Customer GL Ledger"
     ]]]}
 ]
 
