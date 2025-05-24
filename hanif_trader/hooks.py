@@ -43,8 +43,7 @@ fixtures = [
     {"dt": "Custom Field"},
     {"dt": "Client Script"},
     {"dt": "Server Script"},
-    {"dt": "Property Setter"},
-    {"dt": "Customize Form"}
+    {"dt": "Property Setter"}
 ]
 
 # Apps
