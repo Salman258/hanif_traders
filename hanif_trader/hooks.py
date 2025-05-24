@@ -6,44 +6,10 @@ app_email = "salman.hanif917@gmail.com"
 app_license = "mit"
 
 fixtures = [
-    {
-        "dt": "DocType",
-        "filters": [
-            ["name", "in", [
-                "Warranty",
-                "warranty item",
-                "Customer Profile",
-                "Consolidated Report",
-                "Consolidated Sales Metric",
-                "Customer GL Ledger",
-                "Delivery Detail",
-                "Warranty Balance",
-                "Complain",
-                "Technician"
-            ]]
-        ]
-    },
-    {
-        "dt": "DocField",
-        "filters": [
-            ["parent", "in", [
-                "Warranty",
-                "warranty item",
-                "Customer Profile",
-                "Consolidated Report",
-                "Consolidated Sales Metric",
-                "Customer GL Ledger",
-                "Delivery Detail",
-                "Warranty Balance",
-                "Complain",
-                "Technician"
-            ]]
-        ]
-    },
-    {"dt": "Custom Field"},
     {"dt": "Client Script"},
     {"dt": "Server Script"},
-    {"dt": "Property Setter"}
+    {"dt": "Property Setter"},
+    {"dt": "Customize Form"},
 ]
 
 # Apps
