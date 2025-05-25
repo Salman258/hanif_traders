@@ -1,0 +1,105 @@
+{
+ "actions": [],
+ "autoname": "field:name1",
+ "creation": "2023-07-10 14:27:23.685780",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "age",
+  "phone_number",
+  "address",
+  "cnic",
+  "cnic_image",
+  "cnic_picture",
+  "vehicle_number"
+ ],
+ "fields": [
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "age",
+   "fieldtype": "Data",
+   "label": "Age"
+  },
+  {
+   "fieldname": "phone_number",
+   "fieldtype": "Phone",
+   "label": "Phone Number"
+  },
+  {
+   "fieldname": "address",
+   "fieldtype": "Data",
+   "label": "Address"
+  },
+  {
+   "fieldname": "cnic",
+   "fieldtype": "Data",
+   "label": "CNIC Number"
+  },
+  {
+   "fieldname": "cnic_image",
+   "fieldtype": "Attach",
+   "label": "CNIC Image"
+  },
+  {
+   "default": "cnic_image",
+   "fieldname": "cnic_picture",
+   "fieldtype": "Image",
+   "label": "CNIC Picture",
+   "options": "cnic_image"
+  },
+  {
+   "fieldname": "vehicle_number",
+   "fieldtype": "Data",
+   "label": "Vehicle Number"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-25 11:50:39.361694",
+ "modified_by": "salman.hanif917@gmail.com",
+ "module": "Hanif Traders",
+ "name": "Technician",
+ "naming_rule": "By fieldname",
+ "owner": "salman.hanif917@gmail.com",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Support Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

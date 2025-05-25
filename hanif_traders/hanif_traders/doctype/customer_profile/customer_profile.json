@@ -1,0 +1,170 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-09 23:22:41.896797",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "report_details_section",
+  "frequency",
+  "customer",
+  "customer_name",
+  "customer_address",
+  "customer_contact",
+  "mobile",
+  "column_break_fzip",
+  "start_date",
+  "end_date",
+  "territory",
+  "first_transaction",
+  "historical_data_section",
+  "historical_sale_metric",
+  "section_break_ghgm",
+  "current_year_metrics",
+  "monthly_detail",
+  "gl_section",
+  "ledger_entries"
+ ],
+ "fields": [
+  {
+   "fieldname": "report_details_section",
+   "fieldtype": "Section Break",
+   "label": "Report Details"
+  },
+  {
+   "default": "Monthly",
+   "fieldname": "frequency",
+   "fieldtype": "Select",
+   "label": "Frequency",
+   "options": "Custom\nMonthly\nYearly"
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Customer",
+   "options": "Customer",
+   "reqd": 1
+  },
+  {
+   "fetch_from": "customer.customer_name",
+   "fieldname": "customer_name",
+   "fieldtype": "Data",
+   "label": "Customer Name",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.primary_address",
+   "fieldname": "customer_address",
+   "fieldtype": "Data",
+   "label": "Customer Address",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.customer_primary_contact",
+   "fieldname": "customer_contact",
+   "fieldtype": "Data",
+   "label": "Customer Contact",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "customer.mobile_no",
+   "fieldname": "mobile",
+   "fieldtype": "Data",
+   "label": "Mobile No.",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_fzip",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "From Date"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "label": "To Date"
+  },
+  {
+   "fetch_from": "customer.territory",
+   "fieldname": "territory",
+   "fieldtype": "Data",
+   "label": "Territory",
+   "read_only": 1
+  },
+  {
+   "fieldname": "first_transaction",
+   "fieldtype": "Date",
+   "label": "First Transaction",
+   "read_only": 1
+  },
+  {
+   "fieldname": "historical_data_section",
+   "fieldtype": "Section Break",
+   "label": "Historical Data"
+  },
+  {
+   "fieldname": "historical_sale_metric",
+   "fieldtype": "Table",
+   "label": "Previous Year Sales",
+   "options": "Consolidated Sales Metric"
+  },
+  {
+   "fieldname": "section_break_ghgm",
+   "fieldtype": "Section Break",
+   "label": "Current Year Metrics"
+  },
+  {
+   "fieldname": "current_year_metrics",
+   "fieldtype": "Table",
+   "label": "Current Year Metrics",
+   "options": "Consolidated Sales Metric"
+  },
+  {
+   "fieldname": "monthly_detail",
+   "fieldtype": "Table",
+   "label": "Monthly Details",
+   "options": "Consolidated Sales Metric"
+  },
+  {
+   "fieldname": "gl_section",
+   "fieldtype": "Section Break",
+   "label": "Ledger"
+  },
+  {
+   "fieldname": "ledger_entries",
+   "fieldtype": "Table",
+   "label": "Ledger Entries",
+   "options": "Customer GL Ledger"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-25 11:50:36.650311",
+ "modified_by": "salman.hanif917@gmail.com",
+ "module": "Hanif Traders",
+ "name": "Customer Profile",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
