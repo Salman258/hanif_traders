@@ -37,7 +37,8 @@ def execute(filters=None):
                 )
                 FROM `tabJournal Entry Account` debit_jea
                 WHERE debit_jea.parent = je.name AND debit_jea.debit > 0
-            ) AS debited_to
+            ) AS debited_to,
+            'View' AS quick_view
         FROM
             `tabJournal Entry Account` jea
         INNER JOIN
@@ -57,7 +58,6 @@ def execute(filters=None):
             row["__style"] = "background-color: #d1ecf1;"  # light blue
         elif row.status == "Returned":
             row["__style"] = "background-color: #f8d7da;"  # light red
-
     data.extend(journal_entries)
 
     return columns, data
@@ -74,6 +74,7 @@ def get_columns():
 		{"label": "Credit", "fieldname": "credit", "fieldtype": "Currency", "width": 160},
 		{"label": "Reference", "fieldname": "reference", "fieldtype": "Data", "width": 180},
         {"label": "Debited To", "fieldname": "debited_to", "fieldtype": "Data", "width": 240},
+        {"label": "Quick View", "fieldname": "quick_view", "fieldtype": "Data", "width": 100},
     ]
 
 def get_conditions(doc_alias, account_alias, party_type, party, account, status, from_date, to_date):
