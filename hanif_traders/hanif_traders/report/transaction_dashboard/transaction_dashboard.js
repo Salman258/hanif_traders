@@ -23,7 +23,6 @@ frappe.query_reports["Transaction Dashboard"] = {
 
         return formatted;
     },
-    
 
     filters: [
         {
@@ -63,6 +62,7 @@ frappe.query_reports["Transaction Dashboard"] = {
             default: frappe.datetime.get_today()
         }
     ],
+
     after_datatable_render: function (datatable) {
         const wrapper = datatable.wrapper;
 
@@ -159,11 +159,13 @@ frappe.query_reports["Transaction Dashboard"] = {
                             }
                         });
                         d.show();
+                        }
                     }
-                }
-            });
-        }
-     });
-}
+                });
+            }
+        });
+    },
+
+    
 };
 
