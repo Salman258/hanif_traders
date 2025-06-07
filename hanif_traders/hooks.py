@@ -46,8 +46,21 @@ fixtures = [
         ]
     },
     {"dt": "Client Script"},
-    {"dt": "Server Script"}
+    {"dt": "Server Script"},
+    {"dt": "DocType", "filters": [["name", "in", [
+        "Complain",
+        "Consolidated Report",
+        "Consolidated Sales Metric",
+        "Customer GL Ledger",
+        "Customer Profile",
+        "Delivery Detail",
+        "Technician",
+        "Warranty",
+        "Warranty Balance",
+        "Warranty Item"
+    ]]]}
 ]
+
 
 # Apps
 # ------------------
