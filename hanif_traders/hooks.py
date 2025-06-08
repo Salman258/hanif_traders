@@ -58,8 +58,11 @@ fixtures = [
         "Warranty",
         "Warranty Balance",
         "Warranty Item"
-    ]]]}
+    ]]]},
+    {"doctype": "Custom HTML Block", "filters": [["name", "in", "Stock Check"]]}
 ]
+
+app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]
 
 
 # Apps
