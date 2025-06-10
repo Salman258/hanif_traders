@@ -68,7 +68,7 @@ def get_columns():
         {"label": "Voucher No", "fieldname": "name", "fieldtype": "Link", "options": "Journal Entry", "width": 140},
         {"label": "Status", "fieldname": "status", "fieldtype": "Data", "width": 100},
         {"label": "Credit Account", "fieldname": "account", "fieldtype": "Link", "options": "Account", "width": 180},
-		{"label": "Party Type", "fieldname": "party_type", "fieldtype": "Link", "options": "DocType", "width": 120},
+		{"label": "Party Type", "fieldname": "party_type", "fieldtype": "Link", "options": "Party Type", "width": 120},
         {"label": "Party", "fieldname": "party", "fieldtype": "Dynamic Link", "options": "party_type", "width": 140},
         {"label": "Party Name", "fieldname": "party_name", "fieldtype": "Data", "width": 140},
 		{"label": "Credit", "fieldname": "credit", "fieldtype": "Currency", "width": 160},
