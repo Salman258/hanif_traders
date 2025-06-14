@@ -57,7 +57,9 @@ fixtures = [
         "Technician",
         "Warranty",
         "Warranty Balance",
-        "Warranty Item"
+        "Warranty Item",
+        "Customer Payment Receipt",
+        "Customer Payment Receipt Details"
     ]]]},
     {"doctype": "Custom HTML Block", "filters": [["name", "in", "Stock Check"]]}
 ]
