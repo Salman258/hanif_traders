@@ -8,6 +8,7 @@
  "field_order": [
   "customer",
   "customer_name",
+  "receipt_name",
   "column_break_cfta",
   "receipt_number",
   "date",
@@ -49,10 +50,10 @@
    "reqd": 1
   },
   {
+   "depends_on": "eval:doc.receipt_name==\"Manual\"",
    "fieldname": "receipt_number",
    "fieldtype": "Data",
-   "label": "Receipt Number",
-   "read_only": 1
+   "label": "Receipt Number"
   },
   {
    "fetch_from": "customer.customer_name",
@@ -86,14 +87,20 @@
    "fieldname": "collected_by",
    "fieldtype": "Data",
    "label": "Collected By"
+  },
+  {
+   "fieldname": "receipt_name",
+   "fieldtype": "Select",
+   "label": "Receipt Name",
+   "options": "Manual\nAutoname"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-06-15 01:55:52.466909",
- "modified_by": "salman.hanif917@gmail.com",
+ "modified": "2025-06-15 17:24:51.530528",
+ "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Customer Payment Receipt",
  "naming_rule": "Expression (old style)",

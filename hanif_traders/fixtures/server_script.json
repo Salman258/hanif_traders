@@ -161,13 +161,13 @@
   "doctype_event": "Before Save",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-06-15 01:51:29.506446",
+  "modified": "2025-06-15 17:29:24.921283",
   "module": "Hanif Traders",
   "name": "Customer Payment Receipt",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Customer Payment Receipt",
-  "script": "total = 0\nfor row in doc.payment_details:\n    print(f\"Amount:\",row.amount)\n    if row.amount:\n        total=total+row.amount    \ndoc.total_amount = total\n\nif not doc.collected_by:\n    employee= frappe.db.get_value(\"Employee\",{\"user_id\":frappe.session.user},\"employee_name\")\n    print(f\"employee:\",frappe.session.user)\n    if employee:\n        doc.collected_by = employee\n",
+  "script": "total = 0\nfor row in doc.payment_details:\n    print(f\"Amount:\",row.amount)\n    if row.amount:\n        total=total+row.amount    \ndoc.total_amount = total\n\nif not doc.collected_by:\n    employee= frappe.db.get_value(\"Employee\",{\"user_id\":frappe.session.user},\"employee_name\")\n    print(f\"employee:\",frappe.session.user)\n    if employee:\n        doc.collected_by = employee\n    \nif doc.receipt_name == \"Manual\":\n    if not doc.receipt_number:\n        frappe.throw(\"Please enter Receipt Number manually.\")\n    doc.name = doc.receipt_number\n",
   "script_type": "DocType Event"
  },
  {
