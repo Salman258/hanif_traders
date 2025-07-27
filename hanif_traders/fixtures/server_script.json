@@ -188,5 +188,43 @@
   "reference_doctype": "Customer Payment Receipt",
   "script": "for row in doc.payment_details:\n    if not row.amount:\n        continue\n\n    je = frappe.new_doc(\"Journal Entry\")\n    je.posting_date = doc.date\n    je.voucher_type = \"Journal Entry\"\n    je.cheque_no = f\"{row.bank} - {row.instrument_no}\"\n    je.cheque_date = row.instrument_date\n    \n    # Debit entry (money received from customer)\n    je.append(\"accounts\", {\n        \"account\": \"1310 - Debtors - acc\",  # adjust as per your CoA\n        \"party_type\": \"Customer\",\n        \"party\": doc.customer,\n        \"credit_in_account_currency\": row.amount,\n        \"user_remark\": doc.name\n    })\n\n    # Credit entry (to cash or bank)\n    credit_account = \"1110 - Cash - acc\"\n    je.append(\"accounts\", {\n        \"account\": credit_account,\n        \"debit_in_account_currency\": row.amount,\n        \"user_remark\": doc.name\n    })\n\n    je.insert()\n    je.save()\n    row.journal_entry = je.name",
   "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "After Save",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-07-19 23:09:23.426177",
+  "module": "Hanif Traders",
+  "name": "Send SMS on workflow change",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Complain",
+  "script": "# get the prior state (None on very first save)\nold = doc.get_doc_before_save()\n\n# only if there's a phone to message\nif doc.complainer_phone:\n    to_number = doc.complainer_phone.replace(\"+92-\", \"0\")\n    new_state = doc.workflow_state\n    old_state = old.workflow_state if old else None\n\n    # 1) On Open → send registration + ETA SMS\n    if new_state == \"Open\" and old_state != \"Open\":\n        msg = (\n            f\"Dear customer, your complaint no. {doc.name} \"\n            \"has been registered at GFC Service Center Karachi. Estimated resolution time is 48 hours.\"\n        )\n\n    # 2) On Assigned → generate + store a 4-digit CSC, then SMS\n    elif new_state == \"Assigned\" and old_state != \"Assigned\":\n        # generate a pseudo-random 4-digit code (1000–9999)\n        # based on doc.name + current modified timestamp\n        code_int = abs(hash(doc.name + doc.modified)) % 9000 + 1000\n        csc = str(code_int)\n\n        # save it back to the document (no re-trigger because it's DB-level)\n        frappe.db.set_value(\"Complain\", doc.name, \"complain_csc\", csc)\n\n        msg = (\n            f\"Dear customer, technician is assigned to your complaint \"\n            f\"(No. {doc.name}). Please provide code {csc} \"\n            \"to the technician if you’re satisfied with our service.\"\n        )\n    else:\n        msg = None\n\n    # if we built a message, send it and pop up the gateway’s response\n    if msg:\n        try:\n            response = frappe.call(\n                \"frappe.core.doctype.sms_settings.sms_settings.send_sms\",\n                receiver_list=[to_number],\n                msg=msg\n            )\n            frappe.msgprint(f\"✅ SMS Response: {response}\")\n        except Exception as e:\n            frappe.msgprint(f\"❌ SMS Error: {e}\")\n",
+  "script_type": "DocType Event"
+ },
+ {
+  "allow_guest": 0,
+  "api_method": null,
+  "cron_format": null,
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Server Script",
+  "doctype_event": "Before Validate",
+  "enable_rate_limit": 0,
+  "event_frequency": "All",
+  "modified": "2025-07-26 16:23:03.686772",
+  "module": null,
+  "name": "Validate Complain",
+  "rate_limit_count": 5,
+  "rate_limit_seconds": 86400,
+  "reference_doctype": "Complain",
+  "script": "# Prevent moving to Assigned without a technician\nif doc.workflow_state == \"Assigned\" and not doc.assigned_to_technician:\n    frappe.throw(\"Please assign a technician before setting status to Assigned.\")",
+  "script_type": "DocType Event"
  }
 ]
