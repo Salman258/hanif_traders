@@ -39,10 +39,16 @@ frappe.query_reports["Transaction Dashboard"] = {
             options: "party_type"
         },
         {
-            fieldname: "account",
-            label: "Account",
-            fieldtype: "Link",
-            options: "Account"
+            "fieldname": "credit_account",
+            "label": __("Credit Account"),
+            "fieldtype": "Link",
+            "options": "Account"
+        },
+        {
+            "fieldname": "debit_account",
+            "label": __("Debit Account"),
+            "fieldtype": "Link",
+            "options": "Account"
         },
         {
             fieldname: "status",

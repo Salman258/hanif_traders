@@ -1,0 +1,57 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-07-26 17:04:06.605266",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "incentive_start_limit",
+  "incentive_amount",
+  "incentive_account"
+ ],
+ "fields": [
+  {
+   "default": "5",
+   "fieldname": "incentive_start_limit",
+   "fieldtype": "Int",
+   "label": "Incentive Start Limit"
+  },
+  {
+   "default": "150",
+   "fieldname": "incentive_amount",
+   "fieldtype": "Currency",
+   "label": "Incentive Amount"
+  },
+  {
+   "fieldname": "incentive_account",
+   "fieldtype": "Link",
+   "label": "Incentive Payable Account",
+   "options": "Account"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2025-07-27 18:06:20.024654",
+ "modified_by": "Administrator",
+ "module": "Hanif Traders",
+ "name": "Complain Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

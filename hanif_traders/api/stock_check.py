@@ -5,7 +5,7 @@ from frappe import _
 def get_stock_balance(item_code=None, item_group=None, warehouse=None):
     results = []
 
-    def add_bin_results(item_doc, wh_filter=None):
+    def add_bin_results(item_doc, required_qty=None, wh_filter=None):
         bin_filters = {"item_code": item_doc.name}
         if wh_filter:
             bin_filters["warehouse"] = wh_filter
@@ -19,26 +19,26 @@ def get_stock_balance(item_code=None, item_group=None, warehouse=None):
                 "item_group": item_doc.item_group,
                 "warehouse": b.warehouse,
                 "actual_qty": b.actual_qty,
-                "is_stock_item": item_doc.is_stock_item
+                "is_stock_item": item_doc.is_stock_item,
+                "required_qty": required_qty or 1  # default to 1 if not provided
             })
 
     if item_code:
         item = frappe.get_doc("Item", item_code)
         if not item.is_stock_item:
-            # It's a non-stock item → check product bundle children
+            # Non-stock → treat as Product Bundle
             bundles = frappe.get_all("Product Bundle", filters={"new_item_code": item_code})
             for bundle in bundles:
-                children = frappe.get_all("Product Bundle Item", filters={"parent": bundle.name}, fields=["item_code"])
+                children = frappe.get_all("Product Bundle Item", filters={"parent": bundle.name}, fields=["item_code", "qty"])
                 for child in children:
                     child_doc = frappe.get_doc("Item", child.item_code)
-                    # Apply item_group filter to child items if provided
                     if item_group and child_doc.item_group != item_group:
                         continue
-                    add_bin_results(child_doc, warehouse)
+                    add_bin_results(child_doc, required_qty=child.qty, wh_filter=warehouse)
         else:
             if item_group and item.item_group != item_group:
                 return []
-            add_bin_results(item, warehouse)
+            add_bin_results(item, wh_filter=warehouse)
 
     elif item_group or warehouse:
         item_filters = {"is_stock_item": 1}
@@ -48,6 +48,6 @@ def get_stock_balance(item_code=None, item_group=None, warehouse=None):
         items = frappe.get_all("Item", filters=item_filters, fields=["name"])
         for i in items:
             item_doc = frappe.get_doc("Item", i.name)
-            add_bin_results(item_doc, warehouse)
+            add_bin_results(item_doc, wh_filter=warehouse)
 
     return results
