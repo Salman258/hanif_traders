@@ -2,12 +2,14 @@
  "actions": [],
  "allow_rename": 1,
  "autoname": "format:HTW{MM}{YY}{#####}",
- "creation": "2024-11-28 14:52:03.086577",
+ "creation": "2025-06-06 12:18:16.652843",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "section_break_os91",
   "amended_from",
+  "warranty_for",
+  "technician",
   "customer",
   "customer_name",
   "customer_contact",
@@ -45,8 +47,7 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Customer",
-   "options": "Customer",
-   "reqd": 1
+   "options": "Customer"
   },
   {
    "fetch_from": "customer.customer_name",
@@ -122,14 +123,27 @@
    "fieldtype": "Data",
    "label": "Total Items Balanced",
    "read_only": 1
+  },
+  {
+   "fieldname": "warranty_for",
+   "fieldtype": "Select",
+   "label": "Warranty For",
+   "options": "Customer\nTechnician"
+  },
+  {
+   "fieldname": "technician",
+   "fieldtype": "Link",
+   "label": "Technician",
+   "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Technician\"]]",
+   "options": "Employee"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-05-25 11:50:35.634268",
- "modified_by": "salman.hanif917@gmail.com",
+ "modified": "2025-08-03 23:55:56.743368",
+ "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Warranty",
  "naming_rule": "Expression",
