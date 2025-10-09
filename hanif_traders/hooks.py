@@ -6,62 +6,22 @@ app_email = "salman.hanif917@gmail.com"
 app_license = "mit"
 
 fixtures = [
-    {
-        "dt": "Custom Field",
-        "filters": [
-            ["name", "in", [
-                "Stock Entry-custom_purchase_receipt",
-                "Stock Entry-custom_warranty",
-                "Warranty-custom_remarks",
-                "Warranty-custom_section_break_fbdml",
-                "Warranty-custom_book_reference_no",
-                "Warranty-custom_receiver_contact",
-                "Warranty-custom_receiver_name",
-                "Warranty-custom_default_claim_warehouse",
-                "Warranty-custom_column_break_9o4u9",
-                "Warranty-custom_default_receipt_warehouse",
-                "Warranty-custom_section_break_tw5eb",
-                "Purchase Receipt-custom_total_bundle_item_quantity",
-                "Purchase Receipt-custom_packed_items",
-                "Purchase Receipt-custom_section_break_e6wwd",
-                "Warranty Claim-custom_items",
-                "Sales Invoice-workflow_state",
-                "Supplier-custom_display_name",
-                "Customer-custom_display_name",
-                "Journal Entry Account-party_name",
-                "Journal Entry-workflow_state",
-                "Sales Invoice-delivery_note",
-                "Technician-workflow_state",
-                "Delivery Note-workflow_state",
-                "Delivery Note Item-retail_price",
-                "Item-retail_price",
-                "Delivery Note-delivery_date",
-                "Sales Order Item-sale_tax",
-                "Delivery Note-driver_number",
-                "Delivery Note-delivered_by",
-                "Delivery Note-checked_by",
-                "Delivery Note-loaded_by",
-                "Delivery Note-loading_information"
-            ]]
-        ]
-    },
-    {"dt": "Client Script"},
-    {"dt": "Server Script"},
+    # Only our two new doctypes
     {"dt": "DocType", "filters": [["name", "in", [
-        "Complain",
-        "Consolidated Report",
-        "Consolidated Sales Metric",
-        "Customer GL Ledger",
-        "Customer Profile",
-        "Delivery Detail",
-        "Technician",
-        "Warranty",
-        "Warranty Balance",
-        "Warranty Item",
-        "Customer Payment Receipt",
-        "Customer Payment Receipt Details"
+        "Technician Points Log",
+        "Technician Points Redemption",
     ]]]},
-    {"doctype": "Custom HTML Block", "filters": [["name", "in", "Stock Check"]]}
+
+    # Only our custom field on Employee
+    {"dt": "Custom Field", "filters": [["name", "in", [
+        "Employee-custom_total_points",
+    ]]]},
+
+    # Only permissions we set via Role Permission Manager (optional but recommended)
+    {"dt": "Custom DocPerm", "filters": [["parent", "in", [
+        "Technician Points Log",
+        "Technician Points Redemption",
+    ]]]},
 ]
 
 app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]

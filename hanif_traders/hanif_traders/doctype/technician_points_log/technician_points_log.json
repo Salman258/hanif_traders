@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-10-09 16:45:01.515035",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_tsxp"
+ ],
+ "fields": [
+    {"fieldname": "section_break_tsxp","fieldtype": "Section Break"},
+    {"fieldname": "technician", "fieldtype": "Link", "label": "Technician", "options": "Employee", "reqd": 1},
+    {"fieldname": "complain", "fieldtype": "Link", "label": "Complain", "options": "Complain"},
+    {"fieldname": "points", "fieldtype": "Int", "label": "Points"},
+    {"fieldname": "reason", "fieldtype": "Data", "label": "Reason"},
+    {"fieldname": "posting_date", "fieldtype": "Date", "label": "Posting Date", "default": "Today"},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-10-09 16:45:01.515035",
+ "modified_by": "Administrator",
+ "module": "Hanif Traders",
+ "name": "Technician Points Log",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

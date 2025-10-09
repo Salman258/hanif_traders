@@ -1,6 +1,7 @@
 # apps/hanif_traders/hanif_traders/api/complain.py
 import frappe
 from frappe.utils import today
+from hanif_traders.api.technician_points import award_points_for_complain
 
 @frappe.whitelist()
 def verify_csc(complain_name, input_code):
@@ -13,11 +14,29 @@ def verify_csc(complain_name, input_code):
     if complaint.complain_csc != input_code:
         frappe.throw("Invalid CSC code.")
 
-    # Transition the workflow
+    # Update state/fields
     complaint.db_set("workflow_state", "CSC Verified", update_modified=False)
     complaint.db_set("resolution_date", today(), update_modified=False)
 
-    return process_incentive(complaint.name)
+    # Award points (idempotent)
+    award_points_for_complain(complain_name, "CSC_VERIFIED")
+
+    return {"ok": True, "message": f"{complain_name} marked 'CSC Verified' and points awarded."}
+
+@frappe.whitelist()
+def mark_resolved_without_csc(complain_name):
+    complaint = frappe.get_doc("Complain", complain_name)
+    if not complaint.assigned_to_technician:
+        frappe.throw("Assigned Technician not set on this Complain")
+
+    # If you need to change workflow/state, do it here:
+    # complaint.db_set("workflow_state", "Resolved", update_modified=False)
+    # complaint.db_set("resolution_date", today(), update_modified=False)
+
+    from hanif_traders.api.technician_points import award_points_for_complain
+    award_points_for_complain(complain_name, "RESOLVED_NO_CSC")
+
+    return {"ok": True, "message": "Resolved without CSC; points awarded."}
 
 @frappe.whitelist()
 def process_incentive(complain_name):
