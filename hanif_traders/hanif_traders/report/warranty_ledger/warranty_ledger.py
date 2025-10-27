@@ -69,7 +69,7 @@ def execute(filters=None):
             {"label":"Total Balance",   "fieldname":"total_balance",  "fieldtype":"Float",              "width":100},
         ]
 
-        return columns, data
+        return columns, data, None, filters
 
     # ---------------------------------------------
     # DETAILED ROWS (NO GROUPING)
@@ -108,4 +108,4 @@ def execute(filters=None):
             {"label":"Balance",         "fieldname":"balance_qty",    "fieldtype":"Float",              "width":80},
         ]
 
-        return columns, data
+        return columns, data, None, filters
