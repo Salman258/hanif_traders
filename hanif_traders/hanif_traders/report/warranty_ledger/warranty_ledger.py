@@ -2,6 +2,7 @@ import frappe
 from frappe.utils import getdate
 
 def execute(filters=None):
+    frappe.msgprint(f"Filters received: {filters}")
     filters = filters or {}
     from_date   = getdate(filters.get("from_date")) if filters.get("from_date") else None
     to_date     = getdate(filters.get("to_date"))   if filters.get("to_date")   else None
