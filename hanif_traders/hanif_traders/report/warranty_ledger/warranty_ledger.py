@@ -10,6 +10,10 @@ def execute(filters=None):
     item_group  = filters.get("item_group")
     group_by_item = filters.get("group_by_item")
 
+    # Add customer_name for print header
+    if filters.get("customer"):
+        filters["customer_name"] = frappe.get_value("Customer", filters["customer"], "customer_name")
+
     # build where clauses dynamically
     conditions = ["w.docstatus=1"]
     args = {}
@@ -32,22 +36,28 @@ def execute(filters=None):
 
     where = " AND ".join(conditions)
 
+    # ---------------------------------------------
+    # GROUPED BY ITEM
+    # ---------------------------------------------
     if group_by_item:
-        # Aggregated query grouped by item_code and item_name
         data = frappe.db.sql(f"""
             SELECT
                 wi.item_code,
                 wi.item_name,
                 SUM(wi.quantity_received) AS total_received,
                 SUM(wi.quantity_claimed) AS total_claimed,
-                SUM(wi.balance_quantity) AS total_balance
+                SUM(wi.balance_quantity) AS total_balance,
+                w.customer,
+                c.customer_name
             FROM `tabWarranty` w
             JOIN `tabwarranty item` wi
               ON wi.parent = w.name
             LEFT JOIN `tabItem` i
               ON i.name = wi.item_code
+            LEFT JOIN `tabCustomer` c
+              ON c.name = w.customer
             WHERE {where}
-            GROUP BY wi.item_code, wi.item_name
+            GROUP BY wi.item_code, wi.item_name, w.customer, c.customer_name
             ORDER BY wi.item_code
         """, args, as_dict=True)
 
@@ -61,13 +71,16 @@ def execute(filters=None):
 
         return columns, data
 
+    # ---------------------------------------------
+    # DETAILED ROWS (NO GROUPING)
+    # ---------------------------------------------
     else:
-        # Query parent + child + join Item for group
         data = frappe.db.sql(f"""
             SELECT
                 w.name            AS warranty_no,
                 w.date            AS warranty_date,
                 w.customer,
+                c.customer_name,
                 wi.item_code,
                 wi.item_name,
                 wi.quantity_received AS qty_received,
@@ -78,6 +91,8 @@ def execute(filters=None):
               ON wi.parent = w.name
             LEFT JOIN `tabItem` i
               ON i.name = wi.item_code
+            LEFT JOIN `tabCustomer` c
+              ON c.name = w.customer
             WHERE {where}
             ORDER BY w.date, w.name, wi.idx
         """, args, as_dict=True)
@@ -85,7 +100,7 @@ def execute(filters=None):
         columns = [
             {"label":"Warranty#",       "fieldname":"warranty_no",    "fieldtype":"Link", "options":"Warranty", "width":100},
             {"label":"Date",            "fieldname":"warranty_date",  "fieldtype":"Date",               "width":90},
-            {"label":"Customer",        "fieldname":"customer",       "fieldtype":"Link", "options":"Customer", "width":120},
+            {"label":"Customer",        "fieldname":"customer_name",  "fieldtype":"Data",               "width":160},
             {"label":"Item Code",       "fieldname":"item_code",      "fieldtype":"Link", "options":"Item",     "width":100},
             {"label":"Item Name",       "fieldname":"item_name",      "fieldtype":"Data",               "width":140},
             {"label":"Received",        "fieldname":"qty_received",   "fieldtype":"Float",              "width":80},

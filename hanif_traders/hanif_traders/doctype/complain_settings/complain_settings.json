@@ -10,25 +10,25 @@
   "incentive_account"
  ],
  "fields": [
-  {
-   "default": "5",
-   "fieldname": "incentive_start_limit",
-   "fieldtype": "Int",
-   "label": "Incentive Start Limit"
-  },
-  {
-   "default": "150",
-   "fieldname": "incentive_amount",
-   "fieldtype": "Currency",
-   "label": "Incentive Amount"
-  },
-  {
-   "fieldname": "incentive_account",
-   "fieldtype": "Link",
-   "label": "Incentive Payable Account",
-   "options": "Account"
-  }
- ],
+    { "fieldname": "section_points", "fieldtype": "Section Break", "label": "Points" },
+    { "fieldname": "enable_points_system", "fieldtype": "Check", "label": "Enable Points System", "default": "1" },
+    { "fieldname": "points_csc_verified", "fieldtype": "Int", "label": "Points for CSC Verified", "default": "5" },
+    { "fieldname": "points_resolved_no_csc", "fieldtype": "Int", "label": "Points for Resolved (No CSC)", "default": "3" },
+    { "fieldname": "max_points_per_day", "fieldtype": "Int", "label": "Max Points Per Day" },
+    { "fieldname": "point_value", "fieldtype": "Currency", "label": "Value per Point", "default": "10" },
+
+    { "fieldname": "section_incentive", "fieldtype": "Section Break", "label": "Legacy Incentives (Optional)" },
+    { "fieldname": "enable_incentive_journal", "fieldtype": "Check", "label": "Enable Incentive Journal" },
+    { "fieldname": "incentive_start_limit", "fieldtype": "Int", "label": "Incentive Start Limit" },
+    { "fieldname": "incentive_amount", "fieldtype": "Currency", "label": "Incentive Amount" },
+    { "fieldname": "incentive_account", "fieldtype": "Link", "label": "Incentive Account", "options": "Account" },
+    { "fieldname": "incentive_expense_account", "fieldtype": "Link", "label": "Incentive Expense Account", "options": "Account" },
+    { "fieldname": "incentive_payable_account", "fieldtype": "Link", "label": "Incentive Payable Account", "options": "Account" },
+
+    { "fieldname": "section_misc", "fieldtype": "Section Break", "label": "Misc" },
+    { "fieldname": "company", "fieldtype": "Link", "label": "Company", "options": "Company" },
+    { "fieldname": "notification_email", "fieldtype": "Data", "label": "Notification Email" }
+  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
