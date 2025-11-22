@@ -41,6 +41,7 @@ def execute(filters=None):
                 wi.item_code,
                 wi.item_name,
                 wi.replacement_item,
+                ri.item_name as replacement_item_name,
                 SUM(wi.replacement_quantity) AS total_replacement,
                 SUM(wi.quantity_received) AS total_received,
                 SUM(wi.quantity_claimed) AS total_claimed,
@@ -52,6 +53,8 @@ def execute(filters=None):
               ON wi.parent = w.name
             LEFT JOIN `tabItem` i
               ON i.name = wi.item_code
+            LEFT JOIN `tabItem` ri
+              ON ri.name = wi.replacement_item
             LEFT JOIN `tabCustomer` c
               ON c.name = w.customer
             WHERE {where}
@@ -64,7 +67,6 @@ def execute(filters=None):
             {"label":"Item Name",       "fieldname":"item_name",      "fieldtype":"Data",               "width":180},
             {"label":"Total Received",  "fieldname":"total_received", "fieldtype":"Float",              "width":100},
             {"label":"Total Claimed",   "fieldname":"total_claimed",  "fieldtype":"Float",              "width":100},
-            {"label":"Replacement Item",   "fieldname":"replacement_item",  "fieldtype":"Data",              "width":100},
             {"label":"Total Replacement",   "fieldname":"total_replacement",  "fieldtype":"Float",              "width":100},
             {"label":"Total Balance",   "fieldname":"total_balance",  "fieldtype":"Float",              "width":100},
         ]
@@ -85,6 +87,7 @@ def execute(filters=None):
                 wi.item_name,
                 wi.replacement_item,
                 wi.replacement_quantity,
+                ri.item_name as replacement_item_name,
                 wi.quantity_received AS qty_received,
                 wi.quantity_claimed  AS qty_claimed,
                 wi.balance_quantity  AS balance_qty
@@ -93,6 +96,8 @@ def execute(filters=None):
               ON wi.parent = w.name
             LEFT JOIN `tabItem` i
               ON i.name = wi.item_code
+            LEFT JOIN `tabItem` ri
+              ON ri.name = wi.replacement_item
             LEFT JOIN `tabCustomer` c
               ON c.name = w.customer
             WHERE {where}
@@ -107,8 +112,9 @@ def execute(filters=None):
             {"label":"Item Name",       "fieldname":"item_name",      "fieldtype":"Data",               "width":140},
             {"label":"Received",        "fieldname":"qty_received",   "fieldtype":"Float",              "width":80},
             {"label":"Claimed",         "fieldname":"qty_claimed",    "fieldtype":"Float",              "width":80},
-            {"label":"Replacement Item", "fieldname":"replacement_item", "fieldtype":"Data",              "width":100},
-            {"label":"Replacement Qty", "fieldname":"replacement_quantity", "fieldtype":"Float",              "width":80},
+            {"label":"Replacement Item",     "fieldname":"replacement_item", "fieldtype":"Data",              "width":80},
+            {"label":"Replacement Item Name",     "fieldname":"replacement_item_name", "fieldtype":"Data",              "width":80},
+            {"label":"Replacement Qty",     "fieldname":"replacement_quantity", "fieldtype":"Float",              "width":80},
             {"label":"Balance",         "fieldname":"balance_qty",    "fieldtype":"Float",              "width":80},
         ]
 
