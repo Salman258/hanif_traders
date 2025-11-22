@@ -2,7 +2,6 @@ import frappe
 from frappe.utils import getdate
 
 def execute(filters=None):
-    frappe.msgprint(f"Filters received: {filters}")
     filters = filters or {}
     from_date   = getdate(filters.get("from_date")) if filters.get("from_date") else None
     to_date     = getdate(filters.get("to_date"))   if filters.get("to_date")   else None
@@ -10,10 +9,6 @@ def execute(filters=None):
     item_code   = filters.get("item_code")
     item_group  = filters.get("item_group")
     group_by_item = filters.get("group_by_item")
-
-    # Add customer_name for print header
-    if filters.get("customer"):
-        filters["customer_name"] = frappe.get_value("Customer", filters["customer"], "customer_name")
 
     # build where clauses dynamically
     conditions = ["w.docstatus=1"]
@@ -45,6 +40,8 @@ def execute(filters=None):
             SELECT
                 wi.item_code,
                 wi.item_name,
+                wi.replacement_item,
+                SUM(wi.replacement_quantity) AS total_replacement,
                 SUM(wi.quantity_received) AS total_received,
                 SUM(wi.quantity_claimed) AS total_claimed,
                 SUM(wi.balance_quantity) AS total_balance,
@@ -67,6 +64,8 @@ def execute(filters=None):
             {"label":"Item Name",       "fieldname":"item_name",      "fieldtype":"Data",               "width":180},
             {"label":"Total Received",  "fieldname":"total_received", "fieldtype":"Float",              "width":100},
             {"label":"Total Claimed",   "fieldname":"total_claimed",  "fieldtype":"Float",              "width":100},
+            {"label":"Replacement Item",   "fieldname":"replacement_item",  "fieldtype":"Data",              "width":100},
+            {"label":"Total Replacement",   "fieldname":"total_replacement",  "fieldtype":"Float",              "width":100},
             {"label":"Total Balance",   "fieldname":"total_balance",  "fieldtype":"Float",              "width":100},
         ]
 
@@ -84,6 +83,8 @@ def execute(filters=None):
                 c.customer_name,
                 wi.item_code,
                 wi.item_name,
+                wi.replacement_item,
+                wi.replacement_quantity,
                 wi.quantity_received AS qty_received,
                 wi.quantity_claimed  AS qty_claimed,
                 wi.balance_quantity  AS balance_qty
@@ -106,6 +107,8 @@ def execute(filters=None):
             {"label":"Item Name",       "fieldname":"item_name",      "fieldtype":"Data",               "width":140},
             {"label":"Received",        "fieldname":"qty_received",   "fieldtype":"Float",              "width":80},
             {"label":"Claimed",         "fieldname":"qty_claimed",    "fieldtype":"Float",              "width":80},
+            {"label":"Replacement Item", "fieldname":"replacement_item", "fieldtype":"Data",              "width":100},
+            {"label":"Replacement Qty", "fieldname":"replacement_quantity", "fieldtype":"Float",              "width":80},
             {"label":"Balance",         "fieldname":"balance_qty",    "fieldtype":"Float",              "width":80},
         ]
 
