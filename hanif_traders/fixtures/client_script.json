@@ -24,17 +24,6 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Complain",
-  "enabled": 0,
-  "modified": "2025-07-12 13:50:03.148642",
-  "module": "Support",
-  "name": "SMS Notification",
-  "script": "var csc = Math.floor(1000 + Math.random() * 9000);\nfrappe.ui.form.on('Complain', {\n    after_workflow_action: (frm) => {\n        if(frm.doc.workflow_state === 'Assigned'){\n            frm.set_value(\"complain_csc\", csc);\n            console.log(\"3 \"+frm.doc.workflow_state +\" \" + frm.doc.complain_csc);\n            frm.save();\n            \n        }\n    },\n    refresh(frm) {\n\t\tfrm.add_custom_button('Send SMS', function(){\n\t\t\tfrm.trigger(\"send_sms\");\n\t\t});\n\t},\n\tsend_sms: function(frm){\n\t    var To = frm.doc.complainer_phone.replace('+92-','0');\n\t    var Cno =  frm.doc.name;\n\t    var Message =  'Dear customer your complain has been registered at GFC Service Center. Your complain no is'+' '+Cno+' '+'Estimated resolution time is 48 Hours';\n\n       frappe.call({\n            method: \"frappe.core.doctype.sms_settings.sms_settings.send_sms\",\n            args: {\n                receiver_list: [To],\n                msg: Message,\n            },callback: function(r) {\n                if(r.exc) {\n                msgprint(\"1\"+r.exc); return;\n                msgprint(\"2\" + message)}\n            }\n       });\n\t}\n});",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
   "dt": "Item",
   "enabled": 1,
   "modified": "2025-04-10 13:53:20.772112",
@@ -59,10 +48,10 @@
   "doctype": "Client Script",
   "dt": "Warranty",
   "enabled": 1,
-  "modified": "2025-04-24 13:21:46.280830",
+  "modified": "2025-12-15 00:34:18.854642",
   "module": null,
   "name": "Update Balance In Warranty Table",
-  "script": "frappe.ui.form.on('Warranty', {\n    validate: function(frm) {\n        let total_received = 0;\n        let total_claimed = 0;\n\n        (frm.doc.warranty_item_detail || []).forEach(row => {\n            // Calculate and update balance for each row\n            row.balance_quantity = flt(row.quantity_received) - flt(row.quantity_claimed);\n            total_received += flt(row.quantity_received);\n            total_claimed += flt(row.quantity_claimed);\n        });\n\n        frm.set_value('total_items_received', total_received);\n        frm.set_value('total_items_claimed', total_claimed);\n        frm.set_value('total_items_balanced', total_received - total_claimed);\n\n        frm.refresh_field(\"warranty_item_detail\");\n    }\n});\n",
+  "script": "frappe.ui.form.on('Warranty', {\n    validate: function(frm) {\n        let total_received = 0;\n        let total_claimed = 0;\n        let total_balance = 0;\n        let row_balance = 0;    \n\n        (frm.doc.warranty_item_detail || []).forEach(row => {\n            // Calculate and update balance for each row\n            row_balance = flt(row.quantity_received) - flt(row.quantity_claimed) - flt(row.replacement_quantity);\n            row.balance_quantity = row_balance;\n            total_received += flt(row.quantity_received);\n            total_claimed += flt(row.quantity_claimed)+ flt(row.replacement_quantity);\n            total_balance += row_balance;\n        });\n\n        frm.set_value('total_items_received', total_received);\n        frm.set_value('total_items_claimed', total_claimed);\n        frm.set_value('total_items_balanced', total_balance);\n\n        frm.refresh_field(\"warranty_item_detail\");\n    }\n});\n",
   "view": "Form"
  },
  {
@@ -74,28 +63,6 @@
   "module": null,
   "name": "Stock Check on Delivery Note",
   "script": "frappe.ui.form.on('Delivery Note', {\n  refresh: function (frm) {\n    if (!frm.custom_buttons_added) {\n      frm.add_custom_button('🔍 Check Stock', () => open_stock_dialog());\n      frm.custom_buttons_added = true;\n    }\n  }\n});\n\nfunction open_stock_dialog() {\n  const d = new frappe.ui.Dialog({\n    title: \"Stock Check\",\n    size: \"large\",\n    fields: [\n      { fieldtype: \"Section Break\", label: \"Filters\" },\n      { label: \"Item\", fieldname: \"item_code\", fieldtype: \"Link\", options: \"Item\" },\n      { fieldtype: \"Column Break\" },\n      { label: \"Item Group\", fieldname: \"item_group\", fieldtype: \"Link\", options: \"Item Group\" },\n      { fieldtype: \"Column Break\" },\n      { label: \"Warehouse\", fieldname: \"warehouse\", fieldtype: \"Link\", options: \"Warehouse\" },\n      { fieldtype: \"Section Break\" },\n      { label: \"Exclude Zero Quantity\", fieldname: \"exclude_zero_qty\", fieldtype: \"Check\", default: 1 },\n      { fieldtype: \"Section Break\" },\n      { label: \"Check Stock\", fieldname: \"check_stock\", fieldtype: \"Button\" },\n      { fieldtype: \"HTML\", fieldname: \"min_qty_html\" },\n      { fieldtype: \"HTML\", fieldname: \"results_html\" }\n    ],\n    primary_action_label: \"Close\",\n    primary_action: () => d.hide()\n  });\n\n  d.fields_dict.check_stock.input.onclick = async () => {\n    const values = d.get_values();\n    if (!values) return;\n\n    const res = await frappe.call({\n      method: \"hanif_traders.api.stock_check.get_stock_balance\",\n      args: {\n        item_code: values.item_code,\n        item_group: values.item_group,\n        warehouse: values.warehouse\n      }\n    });\n\n    const data = res.message || [];\n    const excludeZero = values.exclude_zero_qty;\n\n    const formattedData = data\n      .filter(row => !excludeZero || row.actual_qty > 0)\n      .map(row => ({\n        'Item': row.item_code || \"\",\n        'Item Name': row.item_name || \"\",\n        'Item Group': row.item_group || \"\",\n        'Warehouse': row.warehouse || \"\",\n        'Actual Qty': row.actual_qty || 0,\n        'Required Qty': row.required_qty || null,\n        'Is Non-Stock': row.is_stock_item ? \"❌\" : \"✅\"\n      }));\n\n    // Calculate min qty for bundle items\n    let min_qty = null;\n    const bundleRows = data.filter(row => row.required_qty);\n    if (bundleRows.length > 0) {\n      min_qty = Math.min(...bundleRows.map(row =>\n        row.required_qty > 0 ? Math.floor(row.actual_qty / row.required_qty) : Infinity\n      ));\n    }\n\n    const min_html = d.fields_dict.min_qty_html.$wrapper;\n    min_html.empty();\n    if (min_qty !== null && isFinite(min_qty)) {\n      min_html.html(`<div style=\"margin-bottom:10px;font-weight:bold;color:#0a58ca;\">\n        ➤ Minimum Available Quantity (based on bundle children): ${min_qty}\n      </div>`);\n    }\n\n    const wrapper = d.fields_dict.results_html.$wrapper;\n    wrapper.empty();\n\n    const table_container = document.createElement('div');\n    wrapper.append(table_container);\n\n    new frappe.DataTable(table_container, {\n      columns: [\n        { name: 'Item', width: 200, format: (value) => `<a href=\"/app/item/${value}\" target=\"_blank\">${value}</a>` },\n        { name: 'Item Name', width: 300 },\n        { name: 'Item Group', width: 200 },\n        { name: 'Warehouse', width: 200 },\n        { name: 'Actual Qty', align: 'right', width: 120 },\n        { name: 'Required Qty', align: 'right', width: 120 },\n        { name: 'Is Non-Stock', width: 120 }\n      ],\n      data: formattedData,\n      layout: 'fixed',\n      noDataMessage: \"No items matched your filters.\",\n      inlineFilters: true,\n      enableSorting: true\n    });\n  };\n\n  d.show();\n}",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Complain",
-  "enabled": 1,
-  "modified": "2025-07-27 16:53:09.850596",
-  "module": null,
-  "name": "Complain",
-  "script": "frappe.ui.form.on('Complain', {\n  refresh(frm) {\n    if (frm.doc.workflow_state === 'Assigned' && frm.doc.complain_csc) {\n      frm.add_custom_button('🔐 Verify CSC', () => {\n        const d = new frappe.ui.Dialog({\n          title: 'Verify CSC Code',\n          fields: [{\n            fieldtype: 'Data',\n            fieldname: 'csc_input',\n            label: '4-digit Code',\n            reqd: 1\n          }],\n          primary_action(values) {\n            d.hide();\n            frappe.call({\n              method: 'hanif_traders.api.complain.verify_csc',\n              args: {\n                complain_name: frm.doc.name,\n                input_code: values.csc_input\n              },\n              callback: r => {\n                if (r.exc) {\n                  frappe.msgprint(`❌ ${r.exc}`);\n                } else {\n                  frappe.msgprint(`✅ ${r.message}`);\n                  frm.reload_doc();\n                }\n              }\n            });\n          }\n        });\n        d.show();\n      });\n    }\n  }\n});",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Complain",
-  "enabled": 0,
-  "modified": "2025-07-27 16:40:05.547461",
-  "module": null,
-  "name": "Verify CSC For Complain",
-  "script": "frappe.ui.form.on('Complain', {\n  refresh: function (frm) {\n    if (frm.doc.workflow_state === \"Assigned\" && frm.doc.complain_csc) {\n        \n      frm.add_custom_button('🔐 Verify CSC', () => {\n        frappe.prompt([\n          {\n            label: 'Enter CSC Code',\n            fieldname: 'entered_csc',\n            fieldtype: 'Data',\n            reqd: true\n          }\n        ],\n        async (values) => {\n          if (values.entered_csc === frm.doc.complain_csc) {\n            // ✅ CSC matched\n            frappe.msgprint(\"✅ CSC verified successfully!\");\n\n            await frm.set_value('workflow_state', 'CSC Verified');\n            await frm.save(); // or frm.submit() if needed\n\n          } else {\n            frappe.msgprint({\n              title: \"❌ Verification Failed\",\n              message: \"The entered CSC code is incorrect.\",\n              indicator: \"red\"\n            });\n          }\n        },\n        'Verify CSC Code');\n      });\n    }\n  }\n});",
   "view": "Form"
  }
 ]

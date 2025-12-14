@@ -39,7 +39,7 @@ def get_data(filters):
     group_by_tariff = cint_bool(filters.get("group_by_tariff"))
 
     # --- Conditions ---
-    conditions = ["si.docstatus = 0"]
+    conditions = ["si.docstatus = 1"]  # Only submitted invoices
     if filters.get("from_date") and filters.get("to_date"):
         conditions.append("si.posting_date BETWEEN %(from_date)s AND %(to_date)s")
     if filters.get("company"):

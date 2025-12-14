@@ -1,25 +1,63 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-10-09 16:45:01.515035",
+ "creation": "2025-12-14 18:50:08.814221",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "section_break_tsxp"
+  "section_break_tsxp",
+  "technician",
+  "complain",
+  "points",
+  "reason",
+  "posting_date",
+  "remarks"
  ],
  "fields": [
-    {"fieldname": "section_break_tsxp","fieldtype": "Section Break"},
-    {"fieldname": "technician", "fieldtype": "Link", "label": "Technician", "options": "Employee", "reqd": 1},
-    {"fieldname": "complain", "fieldtype": "Link", "label": "Complain", "options": "Complain"},
-    {"fieldname": "points", "fieldtype": "Int", "label": "Points"},
-    {"fieldname": "reason", "fieldtype": "Data", "label": "Reason"},
-    {"fieldname": "posting_date", "fieldtype": "Date", "label": "Posting Date", "default": "Today"},
-    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+  {
+   "fieldname": "section_break_tsxp",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "technician",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Technician",
+   "options": "Technician",
+   "reqd": 1
+  },
+  {
+   "fieldname": "complain",
+   "fieldtype": "Link",
+   "label": "Complain",
+   "options": "Complain"
+  },
+  {
+   "fieldname": "points",
+   "fieldtype": "Int",
+   "label": "Points"
+  },
+  {
+   "fieldname": "reason",
+   "fieldtype": "Data",
+   "label": "Reason"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-09 16:45:01.515035",
+ "modified": "2025-12-14 21:11:34.087261",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Technician Points Log",

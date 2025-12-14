@@ -1,7 +1,7 @@
 # apps/hanif_traders/hanif_traders/api/complain.py
 import frappe
 from frappe.utils import today
-from hanif_traders.api.technician_points import award_points_for_complain
+from frappe.utils import time_diff_in_hours, now_datetime, get_datetime
 
 @frappe.whitelist()
 def verify_csc(complain_name, input_code):
@@ -17,11 +17,27 @@ def verify_csc(complain_name, input_code):
     # Update state/fields
     complaint.db_set("workflow_state", "CSC Verified", update_modified=False)
     complaint.db_set("resolution_date", today(), update_modified=False)
+    
+    # Calculate time to resolution
+    if complaint.date and complaint.posting_time:
+        start_time = get_datetime(f"{complaint.date} {complaint.posting_time}")
+    else:
+        start_time = complaint.creation
 
-    # Award points (idempotent)
-    award_points_for_complain(complain_name, "CSC_VERIFIED")
+    time_taken = time_diff_in_hours(now_datetime(), start_time)
+    
+    # Convert to Hours.Minutes (e.g., 1.5 hours -> 1.30)
+    hours = int(time_taken)
+    minutes = (time_taken - hours) * 60
+    formatted_time = hours + (minutes / 100)
 
-    return {"ok": True, "message": f"{complain_name} marked 'CSC Verified' and points awarded."}
+    frappe.db.set_value("Complain", complain_name, "time_to_resolution", formatted_time, update_modified=False)
+
+    # Process Incentives
+    from hanif_traders.api.technician_incentive import process_incentive
+    msg = process_incentive(complain_name, "CSC_VERIFIED")
+
+    return {"ok": True, "message": f"{complain_name} marked 'CSC Verified'. {msg}"}
 
 @frappe.whitelist()
 def mark_resolved_without_csc(complain_name):
@@ -29,74 +45,41 @@ def mark_resolved_without_csc(complain_name):
     if not complaint.assigned_to_technician:
         frappe.throw("Assigned Technician not set on this Complain")
 
-    # If you need to change workflow/state, do it here:
-    # complaint.db_set("workflow_state", "Resolved", update_modified=False)
-    # complaint.db_set("resolution_date", today(), update_modified=False)
+    complaint.db_set("workflow_state", "Resolved", update_modified=False)
+    complaint.db_set("resolution_date", today(), update_modified=False)
 
-    from hanif_traders.api.technician_points import award_points_for_complain
-    award_points_for_complain(complain_name, "RESOLVED_NO_CSC")
+    # Process Incentives
+    from hanif_traders.api.technician_incentive import process_incentive
+    msg = process_incentive(complain_name, "RESOLVED_NO_CSC")
 
-    return {"ok": True, "message": "Resolved without CSC; points awarded."}
+    return {"ok": True, "message": f"Resolved without CSC. {msg}"}
 
 @frappe.whitelist()
-def process_incentive(complain_name):
-    if not complain_name:
-        frappe.throw("Complain name is required.")
+def bulk_assign(complain_names, technician):
+    import json
+    if isinstance(complain_names, str):
+        complain_names = json.loads(complain_names)
     
-    # Fetch the complain document
-    complaint = frappe.get_doc("Complain", complain_name)
-    tech = complaint.assigned_to_technician
-    if not tech:
-        frappe.throw("Assigned Technician not set on this Complain")
+    if not complain_names or not technician:
+        frappe.throw("Complain names and Technician are required.")
+
+    success_count = 0
+    errors = []
+
+    for name in complain_names:
+        try:
+            doc = frappe.get_doc("Complain", name)
+            if doc.workflow_state == "Open":
+                doc.assigned_to_technician = technician
+                doc.workflow_state = "Assigned"
+                doc.save() # This will trigger on_update and send SMS
+                success_count += 1
+        except Exception as e:
+            frappe.log_error(title=f"Bulk Assign Error: {name}", message=frappe.get_traceback())
+            errors.append(f"{name}: {str(e)}")
     
-    #fetch complain settings
-    settings = frappe.get_single("Complain Settings")
-    limit = settings.incentive_start_limit
-    amount = getattr(settings, "incentive_amount",0)
-    incentive_account = settings.incentive_account
-    if not amount:
-        frappe.throw("Incentive amount is not set in Complain Settings.")
-    if not limit:
-        frappe.throw("Incentive limit is not set in Complain Settings.")
+    msg = f"{success_count} complaints assigned."
+    if errors:
+        msg += f" {len(errors)} failed (check Error Log)."
     
-    # Count how many CSC-Verified complaints this tech has today
-    count = frappe.db.count("Complain", {
-        "assigned_to_technician": tech,
-        "workflow_state": "CSC Verified",
-        "resolution_date": today()
-    })
-
-    if count > limit:    
-        # Create a Journal Entry to pay the incentive
-        # Journal Entry Data
-        je = frappe.new_doc("Journal Entry")
-        je.voucher_type = "Journal Entry"
-        je.posting_date = today()
-        je.cheque_no = f"Incentive for Complain {complaint.name}"
-        je.cheque_date = complaint.resolution_date or today()
-
-        # Journal Entry Accounts Data
-        # Debit
-        je.append("accounts", {
-            "account": incentive_account,
-            "debit_in_account_currency": amount,
-            "credit_in_account_currency": 0
-        })
-
-        # Credit
-        je.append("accounts", {
-            "account": "2110 - Creditors - acc",
-            "party_type": "Employee",
-            "party": tech,
-            "debit_in_account_currency": 0,
-            "credit_in_account_currency": amount
-        })
-
-        je.insert(ignore_permissions=True)
-        je.save()
-
-        return (f"Incentive of {amount} posted for complaint #{count} today "
-                f"(limit {limit}). JE: {je.name}")
-    else:
-        return f"No incentive: this is complaint #{count} today (limit {limit})."
-        #return f"Incentive not posted for {complaint.name}, count is {count}."
+    return {"ok": True, "message": msg}

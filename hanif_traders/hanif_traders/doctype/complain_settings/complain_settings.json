@@ -5,35 +5,121 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "incentive_payable_account",
+  "incentive_expense_account",
   "incentive_start_limit",
-  "incentive_amount",
-  "incentive_account"
+  "section_currency_incentive",
+  "enable_currency_incentive",
+  "max_incentive_per_day",
+  "amount_on_csc_verified",
+  "amount_on_resolved",
+  "section_point_incentive",
+  "enable_point_incentive",
+  "point_on_csc_verified",
+  "point_on_resolved",
+  "max_point_per_day",
+  "point_redemption_value",
+  "section_misc",
+  "company",
+  "notification_email"
  ],
  "fields": [
-    { "fieldname": "section_points", "fieldtype": "Section Break", "label": "Points" },
-    { "fieldname": "enable_points_system", "fieldtype": "Check", "label": "Enable Points System", "default": "1" },
-    { "fieldname": "points_csc_verified", "fieldtype": "Int", "label": "Points for CSC Verified", "default": "5" },
-    { "fieldname": "points_resolved_no_csc", "fieldtype": "Int", "label": "Points for Resolved (No CSC)", "default": "3" },
-    { "fieldname": "max_points_per_day", "fieldtype": "Int", "label": "Max Points Per Day" },
-    { "fieldname": "point_value", "fieldtype": "Currency", "label": "Value per Point", "default": "10" },
-
-    { "fieldname": "section_incentive", "fieldtype": "Section Break", "label": "Legacy Incentives (Optional)" },
-    { "fieldname": "enable_incentive_journal", "fieldtype": "Check", "label": "Enable Incentive Journal" },
-    { "fieldname": "incentive_start_limit", "fieldtype": "Int", "label": "Incentive Start Limit" },
-    { "fieldname": "incentive_amount", "fieldtype": "Currency", "label": "Incentive Amount" },
-    { "fieldname": "incentive_account", "fieldtype": "Link", "label": "Incentive Account", "options": "Account" },
-    { "fieldname": "incentive_expense_account", "fieldtype": "Link", "label": "Incentive Expense Account", "options": "Account" },
-    { "fieldname": "incentive_payable_account", "fieldtype": "Link", "label": "Incentive Payable Account", "options": "Account" },
-
-    { "fieldname": "section_misc", "fieldtype": "Section Break", "label": "Misc" },
-    { "fieldname": "company", "fieldtype": "Link", "label": "Company", "options": "Company" },
-    { "fieldname": "notification_email", "fieldtype": "Data", "label": "Notification Email" }
-  ],
+  {
+   "fieldname": "incentive_payable_account",
+   "fieldtype": "Link",
+   "label": "Incentive Payable Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "incentive_expense_account",
+   "fieldtype": "Link",
+   "label": "Incentive Expense Account",
+   "options": "Account"
+  },
+  {
+   "fieldname": "incentive_start_limit",
+   "fieldtype": "Int",
+   "label": "Incentive Start Limit"
+  },
+  {
+   "fieldname": "section_currency_incentive",
+   "fieldtype": "Section Break",
+   "label": "Currency Incentive"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_currency_incentive",
+   "fieldtype": "Check",
+   "label": "Enable Currency Incentive"
+  },
+  {
+   "fieldname": "max_incentive_per_day",
+   "fieldtype": "Currency",
+   "label": "Max Incentive per Day"
+  },
+  {
+   "fieldname": "amount_on_csc_verified",
+   "fieldtype": "Currency",
+   "label": "Amount on CSC Verified Complain"
+  },
+  {
+   "fieldname": "amount_on_resolved",
+   "fieldtype": "Currency",
+   "label": "Amount on Resolved Complain"
+  },
+  {
+   "fieldname": "section_point_incentive",
+   "fieldtype": "Section Break",
+   "label": "Point Incentive"
+  },
+  {
+   "default": "0",
+   "fieldname": "enable_point_incentive",
+   "fieldtype": "Check",
+   "label": "Enable Point Incentive"
+  },
+  {
+   "fieldname": "point_on_csc_verified",
+   "fieldtype": "Int",
+   "label": "Point on CSC Verified Complain"
+  },
+  {
+   "fieldname": "point_on_resolved",
+   "fieldtype": "Int",
+   "label": "Point on Resolved Complain"
+  },
+  {
+   "fieldname": "max_point_per_day",
+   "fieldtype": "Int",
+   "label": "Max Point per Day"
+  },
+  {
+   "fieldname": "point_redemption_value",
+   "fieldtype": "Currency",
+   "label": "Point Redemption Value"
+  },
+  {
+   "fieldname": "section_misc",
+   "fieldtype": "Section Break",
+   "label": "Misc"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company"
+  },
+  {
+   "fieldname": "notification_email",
+   "fieldtype": "Data",
+   "label": "Notification Email"
+  }
+ ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-07-27 18:06:20.024654",
+ "modified": "2025-12-14 20:53:39.875416",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Complain Settings",

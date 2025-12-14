@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestWarrantyBalance(FrappeTestCase):
+class TestTechnicianPointsLog(FrappeTestCase):
 	pass

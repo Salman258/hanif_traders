@@ -1,51 +1,50 @@
 {
  "actions": [],
- "autoname": "field:name1",
+ "autoname": "field:employee_id",
  "creation": "2023-07-10 14:27:23.685780",
  "default_view": "List",
  "doctype": "DocType",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "name1",
-  "age",
+  "technician_name",
+  "technician_age",
   "phone_number",
   "address",
   "cnic",
   "cnic_image",
   "cnic_picture",
-  "vehicle_number"
+  "vehicle_number",
+  "column_break_hzbi",
+  "employee_id",
+  "technician_points",
+  "incentive_earned"
  ],
  "fields": [
   {
-   "fieldname": "name1",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Name",
-   "reqd": 1,
-   "unique": 1
-  },
-  {
-   "fieldname": "age",
-   "fieldtype": "Data",
-   "label": "Age"
-  },
-  {
+   "default": "+92-",
+   "fetch_from": "employee_id.custom_phone_number",
    "fieldname": "phone_number",
    "fieldtype": "Phone",
-   "label": "Phone Number"
+   "label": "Phone Number",
+   "read_only": 1
   },
   {
+   "fetch_from": "employee_id.current_address",
    "fieldname": "address",
    "fieldtype": "Data",
-   "label": "Address"
+   "label": "Address",
+   "read_only": 1
   },
   {
+   "fetch_from": "employee_id.custom_cnic",
    "fieldname": "cnic",
    "fieldtype": "Data",
-   "label": "CNIC Number"
+   "label": "CNIC Number",
+   "read_only": 1
   },
   {
+   "fetch_from": "employee_id.custom_cnic_image",
    "fieldname": "cnic_image",
    "fieldtype": "Attach",
    "label": "CNIC Image"
@@ -61,13 +60,53 @@
    "fieldname": "vehicle_number",
    "fieldtype": "Data",
    "label": "Vehicle Number"
+  },
+  {
+   "fieldname": "column_break_hzbi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "employee_id",
+   "fieldtype": "Link",
+   "label": "Employee ID",
+   "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Technician\"]]",
+   "options": "Employee",
+   "unique": 1
+  },
+  {
+   "fieldname": "technician_points",
+   "fieldtype": "Float",
+   "label": "Points Acquired",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "employee_id.employee_name",
+   "fieldname": "technician_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fetch_from": "employee_id.custom_age",
+   "fieldname": "technician_age",
+   "fieldtype": "Data",
+   "label": "Technician Age",
+   "read_only": 1
+  },
+  {
+   "fieldname": "incentive_earned",
+   "fieldtype": "Currency",
+   "label": "Incentive Earned",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-25 11:50:39.361694",
- "modified_by": "salman.hanif917@gmail.com",
+ "modified": "2025-12-14 21:12:13.835659",
+ "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Technician",
  "naming_rule": "By fieldname",

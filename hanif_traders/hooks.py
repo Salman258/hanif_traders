@@ -6,22 +6,36 @@ app_email = "salman.hanif917@gmail.com"
 app_license = "mit"
 
 fixtures = [
-    # Only our two new doctypes
-    {"dt": "DocType", "filters": [["name", "in", [
-        "Technician Points Log",
-        "Technician Points Redemption",
-    ]]]},
-
     # Only our custom field on Employee
     {"dt": "Custom Field", "filters": [["name", "in", [
-        "Employee-custom_total_points",
+        "Employee-custom_cnic",
+        "Employee-custom_cnic_image",
+        "Employee-custom_cnic_picture",
+        "Employee-custom_age",
+        "Employee-custom_phone_number"
     ]]]},
 
     # Only permissions we set via Role Permission Manager (optional but recommended)
     {"dt": "Custom DocPerm", "filters": [["parent", "in", [
         "Technician Points Log",
         "Technician Points Redemption",
+        "Complain"
     ]]]},
+
+    {
+        "dt": "Workspace",
+        "filters": [["module", "=", "Hanif Traders"]]
+    },
+    {
+        "dt": "Workflow",
+        "filters": [["document_type", "=", "Complain"]]
+    },
+    {
+        "dt": "Server Script"
+    },
+    {
+        "dt": "Client Script"
+    },
 ]
 
 app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]
@@ -159,13 +173,11 @@ app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Employee": {
+		"validate": "hanif_traders.api.employee.calculate_age"
+	}
+}
 
 # Scheduled Tasks
 # ---------------

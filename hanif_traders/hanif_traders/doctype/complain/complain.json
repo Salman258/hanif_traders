@@ -12,6 +12,7 @@
   "complainer_phone",
   "complainer_address",
   "instruction__remarks",
+  "gfc_complain_no",
   "columnbreak_column",
   "date",
   "posting_time",
@@ -21,11 +22,16 @@
   "parent_territory",
   "complain_csc",
   "resolution_date",
+  "time_to_resolution",
   "section_break_j7w4v",
   "assigned_to_technician",
+  "technician_name",
   "technician_phone_no",
   "status",
-  "amended_from"
+  "amended_from",
+  "column_break_jwap",
+  "vehicle_no",
+  "technician_cnic"
  ],
  "fields": [
   {
@@ -126,11 +132,10 @@
    "fieldname": "assigned_to_technician",
    "fieldtype": "Link",
    "label": "Assigned To Technician",
-   "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Technician\"]]",
-   "options": "Employee"
+   "options": "Technician"
   },
   {
-   "fetch_from": "assigned_to_technician.cell_number",
+   "fetch_from": "assigned_to_technician.phone_number",
    "fieldname": "technician_phone_no",
    "fieldtype": "Read Only",
    "label": "Technician Phone No."
@@ -140,13 +145,47 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Status",
-   "options": "Open\nAssigned\nResolved\nClosed"
+   "options": "CSC Verified\nOpen\nAssigned\nResolved\nClosed"
   },
   {
    "fieldname": "resolution_date",
    "fieldtype": "Date",
    "label": "Resolution Date",
    "read_only": 1
+  },
+  {
+   "fieldname": "time_to_resolution",
+   "fieldtype": "Float",
+   "label": "Time to Resolution (Hours)",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "assigned_to_technician.technician_name",
+   "fieldname": "technician_name",
+   "fieldtype": "Data",
+   "label": "Technician Name"
+  },
+  {
+   "fieldname": "gfc_complain_no",
+   "fieldtype": "Data",
+   "label": "GFC Complain No."
+  },
+  {
+   "fieldname": "column_break_jwap",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "assigned_to_technician.vehicle_number",
+   "fieldname": "vehicle_no",
+   "fieldtype": "Data",
+   "label": "Vehicle No.",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "assigned_to_technician.cnic",
+   "fieldname": "technician_cnic",
+   "fieldtype": "Data",
+   "label": "Technician CNIC"
   }
  ],
  "grid_page_length": 50,
@@ -162,7 +201,7 @@
    "link_fieldname": "territory_name"
   }
  ],
- "modified": "2025-07-27 19:33:11.111246",
+ "modified": "2025-12-14 20:11:41.232110",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Complain",
