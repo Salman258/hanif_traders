@@ -1,7 +1,7 @@
 {
  "charts": [],
- "content": "[{\"id\":\"GfL2SvLsbZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\">Service Center</span>\",\"col\":7}},{\"id\":\"tPZWXkCPTR\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Complain Managemen</b></span>\",\"col\":12}},{\"id\":\"ymYwaYPush\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Technicians\",\"col\":4}},{\"id\":\"ck9DFahkBI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain\",\"col\":4}},{\"id\":\"OfTneghEJ6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain Resolved\",\"col\":4}},{\"id\":\"Ow1jkAkpfZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Documents\",\"col\":4}},{\"id\":\"LPDNmlzQrv\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Reports\",\"col\":4}},{\"id\":\"PSNnlEjOxm\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Warranty Management</b></span>\",\"col\":10}},{\"id\":\"GY1RCeXGqo\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Stock Check\",\"col\":2}}]",
- "creation": "2025-12-14 13:14:36.425256",
+ "content": "[{\"id\":\"GfL2SvLsbZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\">Service Center</span>\",\"col\":7}},{\"id\":\"tPZWXkCPTR\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Complain Management</b></span>\",\"col\":12}},{\"id\":\"ymYwaYPush\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Technicians\",\"col\":4}},{\"id\":\"ck9DFahkBI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain\",\"col\":4}},{\"id\":\"OfTneghEJ6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain Resolved\",\"col\":4}},{\"id\":\"Ow1jkAkpfZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Documents\",\"col\":4}},{\"id\":\"LPDNmlzQrv\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Reports\",\"col\":4}},{\"id\":\"PSNnlEjOxm\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Warranty Management</b></span>\",\"col\":10}},{\"id\":\"GY1RCeXGqo\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Stock Check\",\"col\":2}}]",
+ "creation": "2025-12-15 01:07:39.479305",
  "custom_blocks": [
   {
    "custom_block_name": "Stock Check",
@@ -118,7 +118,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-12-14 22:49:36.661015",
+ "modified": "2025-12-15 01:09:57.012051",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Service Center",
