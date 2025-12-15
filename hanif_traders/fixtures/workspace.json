@@ -1,7 +1,7 @@
 [
  {
   "charts": [],
-  "content": "[{\"id\":\"GfL2SvLsbZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\">Service Center</span>\",\"col\":7}},{\"id\":\"tPZWXkCPTR\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Complain Management</b></span>\",\"col\":12}},{\"id\":\"ymYwaYPush\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Technicians\",\"col\":4}},{\"id\":\"ck9DFahkBI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain\",\"col\":4}},{\"id\":\"OfTneghEJ6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain Resolved\",\"col\":4}},{\"id\":\"Ow1jkAkpfZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Documents\",\"col\":4}},{\"id\":\"LPDNmlzQrv\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Reports\",\"col\":4}},{\"id\":\"PSNnlEjOxm\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Warranty Management</b></span>\",\"col\":10}},{\"id\":\"GY1RCeXGqo\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Stock Check\",\"col\":2}}]",
+  "content": "[{\"id\":\"GfL2SvLsbZ\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h1\\\">Service Center</span>\",\"col\":7}},{\"id\":\"tPZWXkCPTR\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Complain Management</b></span>\",\"col\":12}},{\"id\":\"ymYwaYPush\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Technicians\",\"col\":4}},{\"id\":\"ck9DFahkBI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain\",\"col\":4}},{\"id\":\"OfTneghEJ6\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Weekly Complain Resolved\",\"col\":4}},{\"id\":\"Ow1jkAkpfZ\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Documents\",\"col\":4}},{\"id\":\"LPDNmlzQrv\",\"type\":\"card\",\"data\":{\"card_name\":\"Complain Reports\",\"col\":4}},{\"id\":\"PSNnlEjOxm\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Warranty Management</b></span>\",\"col\":10}},{\"id\":\"GY1RCeXGqo\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"Stock Check\",\"col\":2}},{\"id\":\"9W2PBKFtco\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"No of Line Items\",\"col\":4}},{\"id\":\"umAQIY0nns\",\"type\":\"card\",\"data\":{\"card_name\":\"Warranty Documents\",\"col\":4}}]",
   "custom_blocks": [
    {
     "custom_block_name": "Stock Check",
@@ -199,12 +199,55 @@
     "parenttype": "Workspace",
     "report_ref_doctype": "Complain",
     "type": "Link"
+   },
+   {
+    "dependencies": null,
+    "description": null,
+    "hidden": 0,
+    "icon": null,
+    "is_query_report": 0,
+    "label": "Warranty Documents",
+    "link_count": 1,
+    "link_to": null,
+    "link_type": "DocType",
+    "onboard": 0,
+    "only_for": null,
+    "parent": "Service Center",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "report_ref_doctype": null,
+    "type": "Card Break"
+   },
+   {
+    "dependencies": null,
+    "description": null,
+    "hidden": 0,
+    "icon": null,
+    "is_query_report": 0,
+    "label": "Warranty",
+    "link_count": 0,
+    "link_to": "Warranty",
+    "link_type": "DocType",
+    "onboard": 0,
+    "only_for": null,
+    "parent": "Service Center",
+    "parentfield": "links",
+    "parenttype": "Workspace",
+    "report_ref_doctype": null,
+    "type": "Link"
    }
   ],
-  "modified": "2025-12-15 01:09:57.012051",
+  "modified": "2025-12-15 16:43:10.715013",
   "module": "Hanif Traders",
   "name": "Service Center",
   "number_cards": [
+   {
+    "label": "No of Line Items",
+    "number_card_name": "No of Line Items",
+    "parent": "Service Center",
+    "parentfield": "number_cards",
+    "parenttype": "Workspace"
+   },
    {
     "label": "Weekly Complain",
     "number_card_name": "Weekly Complain",

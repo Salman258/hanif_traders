@@ -4,8 +4,8 @@
   "doctype": "Client Script",
   "dt": "Journal Entry",
   "enabled": 1,
-  "modified": "2023-09-28 11:53:36.551374",
-  "module": "Accounts",
+  "modified": "2025-12-15 17:04:52.576147",
+  "module": "Hanif Traders",
   "name": "Party Name",
   "script": "frappe.ui.form.on('Journal Entry', {\n\trefresh(frm) {\n\t\t// your code here\n\t}\n})\n\nfrappe.ui.form.on('Journal Entry Account', {\n party_name: function(frm) {\n     \n    frm.add_fetch(party_type, 'custom_display_name', 'party_name');\n }\n       \n})",
   "view": "Form"
@@ -13,21 +13,10 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Delivery Note",
-  "enabled": 0,
-  "modified": "2024-03-07 18:58:19.958855",
-  "module": null,
-  "name": "Auto Invoice",
-  "script": "frappe.ui.form.on('Delivery Note', {\n\ton_submit(frm) {\n\t\tcur_frm.cscript.make_sales_invoice();\n\t}\n});",
-  "view": "List"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
   "dt": "Item",
   "enabled": 1,
-  "modified": "2025-04-10 13:53:20.772112",
-  "module": null,
+  "modified": "2025-12-15 17:04:27.704862",
+  "module": "Hanif Traders",
   "name": "Product Bundle from Item",
   "script": "frappe.ui.form.on('Item', {\n    refresh: function(frm) {\n        if (!frm.doc.__islocal && !frm.doc.is_template && frm.doc.is_stock_item === 0) {\n\n            frm.add_custom_button(\"Create Product Bundle\", function () {\n\n                frappe.call({\n                    method: \"frappe.client.get_list\",\n                    args: {\n                        doctype: \"Product Bundle\",\n                        filters: {\n                            new_item_code: frm.doc.name\n                        },\n                        limit_page_length: 1\n                    },\n                    callback: function(r) {\n                        if (r.message && r.message.length > 0) {\n                            frappe.msgprint({\n                                title: \"Bundle Already Exists\",\n                                message: \"A product bundle already exists for this item.\",\n                                indicator: \"orange\"\n                            });\n                        } else {\n                            // Create the new Product Bundle doc and route to it\n                            frappe.model.with_doctype(\"Product Bundle\", function () {\n                                let doc = frappe.model.get_new_doc(\"Product Bundle\");\n                                doc.new_item_code = frm.doc.name;\n                                frappe.set_route(\"Form\", \"Product Bundle\", doc.name);\n                            });\n                        }\n                    }\n                });\n\n            }, __(\"Actions\"));\n        }\n    }\n});\n",
   "view": "Form"
@@ -35,32 +24,10 @@
  {
   "docstatus": 0,
   "doctype": "Client Script",
-  "dt": "Purchase Receipt",
-  "enabled": 0,
-  "modified": "2025-04-12 15:15:36.782933",
-  "module": null,
-  "name": "Bundle item total on purchase receipt",
-  "script": "frappe.ui.form.on('Purchase Receipt', {\n    after_save(frm) {\n        let total_qty = 0;\n\n        (frm.doc.custom_packed_items || []).forEach(row => {\n            total_qty += flt(row.qty);\n        });\n\n        frm.set_value(\"custom_total_bundle_item_quantity\", total_qty);\n\n        // Save again to persist the value (if not submitted)\n        if (frm.doc.docstatus === 0) {\n            frm.save();\n        }\n    }\n});\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
-  "dt": "Warranty",
-  "enabled": 1,
-  "modified": "2025-12-15 00:34:18.854642",
-  "module": null,
-  "name": "Update Balance In Warranty Table",
-  "script": "frappe.ui.form.on('Warranty', {\n    validate: function(frm) {\n        let total_received = 0;\n        let total_claimed = 0;\n        let total_balance = 0;\n        let row_balance = 0;    \n\n        (frm.doc.warranty_item_detail || []).forEach(row => {\n            // Calculate and update balance for each row\n            row_balance = flt(row.quantity_received) - flt(row.quantity_claimed) - flt(row.replacement_quantity);\n            row.balance_quantity = row_balance;\n            total_received += flt(row.quantity_received);\n            total_claimed += flt(row.quantity_claimed)+ flt(row.replacement_quantity);\n            total_balance += row_balance;\n        });\n\n        frm.set_value('total_items_received', total_received);\n        frm.set_value('total_items_claimed', total_claimed);\n        frm.set_value('total_items_balanced', total_balance);\n\n        frm.refresh_field(\"warranty_item_detail\");\n    }\n});\n",
-  "view": "Form"
- },
- {
-  "docstatus": 0,
-  "doctype": "Client Script",
   "dt": "Delivery Note",
   "enabled": 1,
-  "modified": "2025-07-26 16:11:27.203820",
-  "module": null,
+  "modified": "2025-12-15 17:04:20.058623",
+  "module": "Hanif Traders",
   "name": "Stock Check on Delivery Note",
   "script": "frappe.ui.form.on('Delivery Note', {\n  refresh: function (frm) {\n    if (!frm.custom_buttons_added) {\n      frm.add_custom_button('🔍 Check Stock', () => open_stock_dialog());\n      frm.custom_buttons_added = true;\n    }\n  }\n});\n\nfunction open_stock_dialog() {\n  const d = new frappe.ui.Dialog({\n    title: \"Stock Check\",\n    size: \"large\",\n    fields: [\n      { fieldtype: \"Section Break\", label: \"Filters\" },\n      { label: \"Item\", fieldname: \"item_code\", fieldtype: \"Link\", options: \"Item\" },\n      { fieldtype: \"Column Break\" },\n      { label: \"Item Group\", fieldname: \"item_group\", fieldtype: \"Link\", options: \"Item Group\" },\n      { fieldtype: \"Column Break\" },\n      { label: \"Warehouse\", fieldname: \"warehouse\", fieldtype: \"Link\", options: \"Warehouse\" },\n      { fieldtype: \"Section Break\" },\n      { label: \"Exclude Zero Quantity\", fieldname: \"exclude_zero_qty\", fieldtype: \"Check\", default: 1 },\n      { fieldtype: \"Section Break\" },\n      { label: \"Check Stock\", fieldname: \"check_stock\", fieldtype: \"Button\" },\n      { fieldtype: \"HTML\", fieldname: \"min_qty_html\" },\n      { fieldtype: \"HTML\", fieldname: \"results_html\" }\n    ],\n    primary_action_label: \"Close\",\n    primary_action: () => d.hide()\n  });\n\n  d.fields_dict.check_stock.input.onclick = async () => {\n    const values = d.get_values();\n    if (!values) return;\n\n    const res = await frappe.call({\n      method: \"hanif_traders.api.stock_check.get_stock_balance\",\n      args: {\n        item_code: values.item_code,\n        item_group: values.item_group,\n        warehouse: values.warehouse\n      }\n    });\n\n    const data = res.message || [];\n    const excludeZero = values.exclude_zero_qty;\n\n    const formattedData = data\n      .filter(row => !excludeZero || row.actual_qty > 0)\n      .map(row => ({\n        'Item': row.item_code || \"\",\n        'Item Name': row.item_name || \"\",\n        'Item Group': row.item_group || \"\",\n        'Warehouse': row.warehouse || \"\",\n        'Actual Qty': row.actual_qty || 0,\n        'Required Qty': row.required_qty || null,\n        'Is Non-Stock': row.is_stock_item ? \"❌\" : \"✅\"\n      }));\n\n    // Calculate min qty for bundle items\n    let min_qty = null;\n    const bundleRows = data.filter(row => row.required_qty);\n    if (bundleRows.length > 0) {\n      min_qty = Math.min(...bundleRows.map(row =>\n        row.required_qty > 0 ? Math.floor(row.actual_qty / row.required_qty) : Infinity\n      ));\n    }\n\n    const min_html = d.fields_dict.min_qty_html.$wrapper;\n    min_html.empty();\n    if (min_qty !== null && isFinite(min_qty)) {\n      min_html.html(`<div style=\"margin-bottom:10px;font-weight:bold;color:#0a58ca;\">\n        ➤ Minimum Available Quantity (based on bundle children): ${min_qty}\n      </div>`);\n    }\n\n    const wrapper = d.fields_dict.results_html.$wrapper;\n    wrapper.empty();\n\n    const table_container = document.createElement('div');\n    wrapper.append(table_container);\n\n    new frappe.DataTable(table_container, {\n      columns: [\n        { name: 'Item', width: 200, format: (value) => `<a href=\"/app/item/${value}\" target=\"_blank\">${value}</a>` },\n        { name: 'Item Name', width: 300 },\n        { name: 'Item Group', width: 200 },\n        { name: 'Warehouse', width: 200 },\n        { name: 'Actual Qty', align: 'right', width: 120 },\n        { name: 'Required Qty', align: 'right', width: 120 },\n        { name: 'Is Non-Stock', width: 120 }\n      ],\n      data: formattedData,\n      layout: 'fixed',\n      noDataMessage: \"No items matched your filters.\",\n      inlineFilters: true,\n      enableSorting: true\n    });\n  };\n\n  d.show();\n}",
   "view": "Form"
