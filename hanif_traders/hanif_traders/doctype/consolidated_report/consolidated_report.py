@@ -1,9 +1,0 @@
-# Copyright (c) 2025, Salman and contributors
-# For license information, please see license.txt
-
-# import frappe
-from frappe.model.document import Document
-
-
-class ConsolidatedReport(Document):
-	pass
