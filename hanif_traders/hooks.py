@@ -37,8 +37,11 @@ fixtures = [
         "dt": "Client Script"
     },
     {
-        "dt": "Workflow State"
-    },
+    "dt": "Workflow State",
+    "filters": [["workflow_state_name", "in", [
+        "CSC Verified"
+    ]]]
+}
 ]
 
 app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]

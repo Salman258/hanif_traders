@@ -1,11 +1,11 @@
 [
-    {
-        "docstatus": 0,
-        "doctype": "Workflow State",
-        "icon": "",
-        "modified": "2025-07-12 14:37:15.344640",
-        "name": "CSC Verified",
-        "style": "",
-        "workflow_state_name": "CSC Verified"
-    }
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-07-12 14:37:15.344640",
+  "name": "CSC Verified",
+  "style": "",
+  "workflow_state_name": "CSC Verified"
+ }
 ]
