@@ -51,7 +51,6 @@ def mark_resolved_without_csc(complain_name):
     # Process Incentives
     from hanif_traders.api.technician_incentive import process_incentive
     msg = process_incentive(complain_name, "RESOLVED_NO_CSC")
-
     return {"ok": True, "message": f"Resolved without CSC. {msg}"}
 
 @frappe.whitelist()

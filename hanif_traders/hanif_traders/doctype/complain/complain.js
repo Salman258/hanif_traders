@@ -41,7 +41,7 @@ frappe.ui.form.on('Complain', {
                                 if (r.exc) {
                                     frappe.msgprint(`❌ ${r.exc}`);
                                 } else {
-                                    frappe.msgprint(`✅ ${r.message}`);
+                                    frappe.msgprint(`✅ SMS Sent Successfully`);
                                     frm.reload_doc();
                                 }
                             }

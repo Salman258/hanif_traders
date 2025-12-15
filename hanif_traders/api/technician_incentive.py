@@ -87,7 +87,7 @@ def _process_currency_incentive(complaint, tech_name, settings, reason):
 
     je.insert(ignore_permissions=True)
     je.save()
-    je.submit() # Auto-submit? Usually incentives are auto-posted.
+    je.submit() 
 
     # Update Technician Record
     _update_technician_currency(tech_name, amount)

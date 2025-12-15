@@ -33,7 +33,7 @@ frappe.query_reports["Warranty Ledger"] = {
       fieldtype: "Link",
       options: "Item Group"
     },
-	{
+    {
       fieldname: "group_by_item",
       label: __("Group by Item"),
       fieldtype: "Check"

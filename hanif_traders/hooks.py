@@ -16,11 +16,13 @@ fixtures = [
     ]]]},
 
     # Only permissions we set via Role Permission Manager (optional but recommended)
-    {"dt": "Custom DocPerm", "filters": [["parent", "in", [
+    {
+        "dt": "Custom DocPerm", "filters": [["parent", "in", [
         "Technician Points Log",
         "Technician Points Redemption",
         "Complain"
-    ]]]},
+    ]]]
+    },
 
     {
         "dt": "Workspace",
@@ -31,17 +33,25 @@ fixtures = [
         "filters": [["document_type", "=", "Complain"]]
     },
     {
-        "dt": "Server Script"
+        "dt": "Server Script",
+        "filters": [["module", "=", "Hanif Traders"]]
     },
     {
-        "dt": "Client Script"
+        "dt": "Client Script",
+        "filters": [["module", "=", "Hanif Traders"]]
     },
     {
-    "dt": "Workflow State",
-    "filters": [["workflow_state_name", "in", [
-        "CSC Verified"
-    ]]]
-}
+        "dt": "Workflow State",
+        "filters": [["workflow_state_name", "in", ["CSC Verified"]]]
+    },
+    {
+        "dt": "Number Card",
+        "filters": [["name", "in", [
+            "Weekly Complain",
+            "Weekly Complain Resolved",
+            "No of Line Items"
+        ]]]
+    },
 ]
 
 app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]
@@ -182,7 +192,12 @@ app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]
 doc_events = {
 	"Employee": {
 		"validate": "hanif_traders.api.employee.calculate_age"
-	}
+	},
+    "Purchase Receipt": {
+        "validate": "hanif_traders.api.purchase_receipt.explode_bundle_items",
+        "on_submit": "hanif_traders.api.purchase_receipt.create_stock_entry_on_submit",
+        "on_cancel": "hanif_traders.api.purchase_receipt.cancel_stock_entry"
+    }
 }
 
 # Scheduled Tasks

@@ -18,6 +18,7 @@
   "date",
   "posting_time",
   "section_break_beuq",
+  "item_group",
   "warranty_item_detail",
   "section_break_qqzi",
   "total_items_received",
@@ -90,6 +91,12 @@
    "label": "Warranty Items"
   },
   {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Linked to Item Group",
+   "options": "Item Group"
+  },
+  {
    "fieldname": "warranty_item_detail",
    "fieldtype": "Table",
    "options": "warranty item"
@@ -134,15 +141,14 @@
    "fieldname": "technician",
    "fieldtype": "Link",
    "label": "Technician",
-   "link_filters": "[[\"Employee\",\"designation\",\"=\",\"Technician\"]]",
-   "options": "Employee"
+   "options": "Technician"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2025-08-03 23:55:56.743368",
+ "modified": "2025-12-15 16:40:50.941194",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Warranty",

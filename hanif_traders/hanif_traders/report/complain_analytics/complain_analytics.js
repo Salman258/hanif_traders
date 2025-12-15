@@ -51,13 +51,12 @@ frappe.query_reports["Complain Analytics"] = {
             else if (time > 48 && time <= 72) bg = "#FF6347";
             else if (time > 72) bg = "#FF0000";
 
-            // 🔧 DataTable cells usually have padding ~8px; negate it to fill the whole cell.
             return `
           <div style="
               background:${bg};
               display:block;
-              margin:-8px;              /* <-- makes background touch cell edges */
-              padding:8px;              /* <-- keeps text spacing nice */
+              margin:-8px;
+              padding:8px;
               box-sizing:border-box;
               text-align:right;
               font-weight:700;

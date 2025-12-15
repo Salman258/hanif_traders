@@ -168,7 +168,8 @@
   {
    "fieldname": "gfc_complain_no",
    "fieldtype": "Data",
-   "label": "GFC Complain No."
+   "label": "GFC Complain No.",
+   "unique": 1
   },
   {
    "fieldname": "column_break_jwap",
@@ -201,7 +202,7 @@
    "link_fieldname": "territory_name"
   }
  ],
- "modified": "2025-12-14 20:11:41.232110",
+ "modified": "2025-12-15 14:53:07.647341",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Complain",
