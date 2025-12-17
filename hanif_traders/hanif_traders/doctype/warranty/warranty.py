@@ -13,6 +13,7 @@ class Warranty(Document):
 		total_balance = 0
 
 		for row in self.warranty_item_detail:
+			
 			# Calculate and update balance for each row
 			row_balance = flt(row.quantity_received) - flt(row.quantity_claimed) - flt(row.replacement_quantity)
 			row.balance_quantity = row_balance
@@ -43,10 +44,13 @@ class Warranty(Document):
 					"item_code": row.item_code,
 					"qty": row.quantity_claimed
 				})
-				claimed_items.append({
-					"item_code": row.replacement_item,
-					"qty": row.replacement_quantity
-				})
+				
+				# Only add replacement item if it's specified and has quantity
+				if row.replacement_item and row.replacement_quantity > 0:
+					claimed_items.append({
+						"item_code": row.replacement_item,
+						"qty": row.replacement_quantity
+					})
 		
 		# For Material Receipt -> use custom_default_receipt_warehouse mapped to 'to_warehouse'
 		create_stock_entry(

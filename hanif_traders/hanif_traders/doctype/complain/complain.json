@@ -1,5 +1,6 @@
 {
  "actions": [],
+ "allow_import": 1,
  "allow_rename": 1,
  "autoname": "format:CP{YY}{MM}{#####}",
  "creation": "2025-06-06 12:18:16.163609",
@@ -202,7 +203,7 @@
    "link_fieldname": "territory_name"
   }
  ],
- "modified": "2025-12-15 14:53:07.647341",
+ "modified": "2025-12-16 13:42:59.737927",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Complain",
