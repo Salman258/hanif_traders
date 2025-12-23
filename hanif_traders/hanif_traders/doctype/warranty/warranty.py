@@ -52,20 +52,24 @@ class Warranty(Document):
 						"qty": row.replacement_quantity
 					})
 		
-		# For Material Receipt -> use custom_default_receipt_warehouse mapped to 'to_warehouse'
+		# For Material Receipt -> use default_receipt_warehouse mapped to 'to_warehouse'
 		create_stock_entry(
 			self,
 			"Material Receipt",
 			received_items,
-			custom_warehouse_field="custom_default_receipt_warehouse",
+			warehouse_field="default_receipt_warehouse",
 			required_field_name="to_warehouse"
 		)
 
-		# For Material Issue -> use custom_default_claim_warehouse mapped to 'from_warehouse'
-		create_stock_entry(
-			self,
-			"Material Issue",
-			claimed_items,
-			custom_warehouse_field="custom_default_claim_warehouse",
-			required_field_name="from_warehouse"
-		)
+		if self.claim_settlement_type == "Credit Note":
+			from hanif_traders.api.warranty import create_journal_entry
+			create_journal_entry(self, claimed_items)
+		else:
+			# For Material Issue -> use default_claim_warehouse mapped to 'from_warehouse'
+			create_stock_entry(
+				self,
+				"Material Issue",
+				claimed_items,
+				warehouse_field="default_claim_warehouse",
+				required_field_name="from_warehouse"
+			)

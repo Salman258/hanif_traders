@@ -1,260 +1,261 @@
 {
- "actions": [],
- "allow_import": 1,
- "allow_rename": 1,
- "autoname": "format:CP{YY}{MM}{#####}",
- "creation": "2025-06-06 12:18:16.163609",
- "default_view": "List",
- "doctype": "DocType",
- "editable_grid": 1,
- "engine": "InnoDB",
- "field_order": [
-  "complainer_name",
-  "complainer_phone",
-  "complainer_address",
-  "instruction__remarks",
-  "gfc_complain_no",
-  "columnbreak_column",
-  "date",
-  "posting_time",
-  "workflow_state",
-  "priority",
-  "territory",
-  "parent_territory",
-  "complain_csc",
-  "resolution_date",
-  "time_to_resolution",
-  "section_break_j7w4v",
-  "assigned_to_technician",
-  "technician_name",
-  "technician_phone_no",
-  "status",
-  "amended_from",
-  "column_break_jwap",
-  "vehicle_no",
-  "technician_cnic"
- ],
- "fields": [
-  {
-   "fieldname": "complainer_name",
-   "fieldtype": "Data",
-   "in_list_view": 1,
-   "label": "Complainer Name",
-   "reqd": 1
-  },
-  {
-   "default": "+92-",
-   "fieldname": "complainer_phone",
-   "fieldtype": "Phone",
-   "in_list_view": 1,
-   "label": "Complainer Phone",
-   "reqd": 1
-  },
-  {
-   "fieldname": "complainer_address",
-   "fieldtype": "Data",
-   "label": "Complainer Address",
-   "reqd": 1
-  },
-  {
-   "fieldname": "instruction__remarks",
-   "fieldtype": "Small Text",
-   "label": "Instruction / Remarks"
-  },
-  {
-   "fieldname": "columnbreak_column",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "Today",
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "in_list_view": 1,
-   "label": "Date",
-   "read_only": 1
-  },
-  {
-   "default": "Now",
-   "fieldname": "posting_time",
-   "fieldtype": "Time",
-   "label": "Posting Time",
-   "read_only": 1
-  },
-  {
-   "fieldname": "workflow_state",
-   "fieldtype": "Link",
-   "label": "Status",
-   "options": "Workflow State",
-   "print_hide": 1,
-   "read_only": 1
-  },
-  {
-   "default": "Medium",
-   "fieldname": "priority",
-   "fieldtype": "Select",
-   "label": "Priority",
-   "options": "High\nMedium\nLow"
-  },
-  {
-   "fieldname": "territory",
-   "fieldtype": "Link",
-   "label": "Territory",
-   "options": "Territory"
-  },
-  {
-   "fetch_from": "territory.parent_territory",
-   "fieldname": "parent_territory",
-   "fieldtype": "Read Only",
-   "label": "Parent Territory"
-  },
-  {
-   "fieldname": "complain_csc",
-   "fieldtype": "Data",
-   "hidden": 1,
-   "label": "Customer Satification Code (CSC)",
-   "read_only": 1
-  },
-  {
-   "fieldname": "section_break_j7w4v",
-   "fieldtype": "Section Break",
-   "label": "Technician Details"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Complain",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
-  },
-  {
-   "fieldname": "assigned_to_technician",
-   "fieldtype": "Link",
-   "label": "Assigned To Technician",
-   "options": "Technician"
-  },
-  {
-   "fetch_from": "assigned_to_technician.phone_number",
-   "fieldname": "technician_phone_no",
-   "fieldtype": "Read Only",
-   "label": "Technician Phone No."
-  },
-  {
-   "fieldname": "status",
-   "fieldtype": "Select",
-   "hidden": 1,
-   "label": "Status",
-   "options": "CSC Verified\nOpen\nAssigned\nResolved\nClosed"
-  },
-  {
-   "fieldname": "resolution_date",
-   "fieldtype": "Date",
-   "label": "Resolution Date",
-   "read_only": 1
-  },
-  {
-   "fieldname": "time_to_resolution",
-   "fieldtype": "Float",
-   "label": "Time to Resolution (Hours)",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "assigned_to_technician.technician_name",
-   "fieldname": "technician_name",
-   "fieldtype": "Data",
-   "label": "Technician Name"
-  },
-  {
-   "fieldname": "gfc_complain_no",
-   "fieldtype": "Data",
-   "label": "GFC Complain No.",
-   "unique": 1
-  },
-  {
-   "fieldname": "column_break_jwap",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fetch_from": "assigned_to_technician.vehicle_number",
-   "fieldname": "vehicle_no",
-   "fieldtype": "Data",
-   "label": "Vehicle No.",
-   "read_only": 1
-  },
-  {
-   "fetch_from": "assigned_to_technician.cnic",
-   "fieldname": "technician_cnic",
-   "fieldtype": "Data",
-   "label": "Technician CNIC"
-  }
- ],
- "grid_page_length": 50,
- "index_web_pages_for_search": 1,
- "is_submittable": 1,
- "links": [
-  {
-   "link_doctype": "Technician",
-   "link_fieldname": "Name1"
-  },
-  {
-   "link_doctype": "Territory",
-   "link_fieldname": "territory_name"
-  }
- ],
- "modified": "2025-12-16 13:42:59.737927",
- "modified_by": "Administrator",
- "module": "Hanif Traders",
- "name": "Complain",
- "name_case": "UPPER CASE",
- "naming_rule": "Expression",
- "owner": "Administrator",
- "permissions": [
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Support Team",
-   "share": 1,
-   "write": 1
-  },
-  {
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "Support Manager",
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  }
- ],
- "row_format": "Dynamic",
- "show_name_in_global_search": 1,
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": [],
- "track_changes": 1,
- "track_seen": 1
+    "actions": [],
+    "allow_import": 1,
+    "allow_rename": 1,
+    "autoname": "format:CP{YY}{MM}{#####}",
+    "creation": "2025-06-06 12:18:16.163609",
+    "default_view": "List",
+    "doctype": "DocType",
+    "editable_grid": 1,
+    "engine": "InnoDB",
+    "field_order": [
+        "complainer_name",
+        "complainer_phone",
+        "complainer_address",
+        "instruction__remarks",
+        "gfc_complain_no",
+        "columnbreak_column",
+        "date",
+        "posting_time",
+        "workflow_state",
+        "priority",
+        "territory",
+        "parent_territory",
+        "complain_csc",
+        "resolution_date",
+        "time_to_resolution",
+        "section_break_j7w4v",
+        "assigned_to_technician",
+        "technician_name",
+        "technician_phone_no",
+        "status",
+        "amended_from",
+        "column_break_jwap",
+        "vehicle_no",
+        "technician_cnic"
+    ],
+    "fields": [
+        {
+            "fieldname": "complainer_name",
+            "fieldtype": "Data",
+            "in_list_view": 1,
+            "label": "Complainer Name",
+            "reqd": 1
+        },
+        {
+            "default": "+92-",
+            "fieldname": "complainer_phone",
+            "fieldtype": "Phone",
+            "in_list_view": 1,
+            "label": "Complainer Phone",
+            "reqd": 1
+        },
+        {
+            "fieldname": "complainer_address",
+            "fieldtype": "Data",
+            "label": "Complainer Address",
+            "reqd": 1
+        },
+        {
+            "fieldname": "instruction__remarks",
+            "fieldtype": "Small Text",
+            "label": "Instruction / Remarks"
+        },
+        {
+            "fieldname": "columnbreak_column",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "Today",
+            "fieldname": "date",
+            "fieldtype": "Date",
+            "in_list_view": 1,
+            "label": "Date",
+            "read_only": 1
+        },
+        {
+            "default": "Now",
+            "fieldname": "posting_time",
+            "fieldtype": "Time",
+            "label": "Posting Time",
+            "read_only": 1
+        },
+        {
+            "fieldname": "workflow_state",
+            "fieldtype": "Link",
+            "label": "Status",
+            "options": "Workflow State",
+            "print_hide": 1,
+            "read_only": 1
+        },
+        {
+            "default": "Medium",
+            "fieldname": "priority",
+            "fieldtype": "Select",
+            "label": "Priority",
+            "options": "High\nMedium\nLow"
+        },
+        {
+            "fieldname": "territory",
+            "fieldtype": "Link",
+            "label": "Territory",
+            "options": "Territory"
+        },
+        {
+            "fetch_from": "territory.parent_territory",
+            "fieldname": "parent_territory",
+            "fieldtype": "Read Only",
+            "label": "Parent Territory"
+        },
+        {
+            "fieldname": "complain_csc",
+            "fieldtype": "Data",
+            "hidden": 1,
+            "label": "Customer Satification Code (CSC)",
+            "read_only": 1
+        },
+        {
+            "fieldname": "section_break_j7w4v",
+            "fieldtype": "Section Break",
+            "label": "Technician Details"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Complain",
+            "print_hide": 1,
+            "read_only": 1,
+            "search_index": 1
+        },
+        {
+            "fieldname": "assigned_to_technician",
+            "fieldtype": "Link",
+            "label": "Assigned To Technician",
+            "options": "Technician"
+        },
+        {
+            "fetch_from": "assigned_to_technician.phone_number",
+            "fieldname": "technician_phone_no",
+            "fieldtype": "Read Only",
+            "label": "Technician Phone No."
+        },
+        {
+            "fieldname": "status",
+            "fieldtype": "Select",
+            "hidden": 1,
+            "label": "Status",
+            "options": "CSC Verified\nOpen\nAssigned\nResolved\nClosed"
+        },
+        {
+            "fieldname": "resolution_date",
+            "fieldtype": "Date",
+            "label": "Resolution Date",
+            "read_only": 1
+        },
+        {
+            "fieldname": "time_to_resolution",
+            "fieldtype": "Float",
+            "label": "Time to Resolution (Hours)",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "assigned_to_technician.technician_name",
+            "fieldname": "technician_name",
+            "fieldtype": "Data",
+            "label": "Technician Name"
+        },
+        {
+            "fieldname": "gfc_complain_no",
+            "fieldtype": "Data",
+            "label": "GFC Complain No.",
+            "unique": 1
+        },
+        {
+            "fieldname": "column_break_jwap",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fetch_from": "assigned_to_technician.vehicle_number",
+            "fieldname": "vehicle_no",
+            "fieldtype": "Data",
+            "label": "Vehicle No.",
+            "read_only": 1
+        },
+        {
+            "fetch_from": "assigned_to_technician.cnic",
+            "fieldname": "technician_cnic",
+            "fieldtype": "Data",
+            "label": "Technician CNIC"
+        }
+    ],
+    "grid_page_length": 50,
+    "index_web_pages_for_search": 1,
+    "is_submittable": 1,
+    "links": [
+        {
+            "link_doctype": "Technician",
+            "link_fieldname": "Name1"
+        },
+        {
+            "link_doctype": "Territory",
+            "link_fieldname": "territory_name"
+        }
+    ],
+    "modified": "2025-12-17 11:56:40.891047",
+    "modified_by": "Administrator",
+    "module": "Hanif Traders",
+    "name": "Complain",
+    "name_case": "UPPER CASE",
+    "naming_rule": "Expression",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "import": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Support Team",
+            "share": 1,
+            "write": 1
+        },
+        {
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "Support Manager",
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "show_name_in_global_search": 1,
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": [],
+    "track_changes": 1,
+    "track_seen": 1
 }

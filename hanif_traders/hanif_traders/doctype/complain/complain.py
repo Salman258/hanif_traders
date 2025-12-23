@@ -74,7 +74,9 @@ class Complain(Document):
 				msg = frappe.render_template(settings.assigned_sms_template, {"doc": self, "csc_code": csc})
 		
 		elif (new_state == "CSC Verified" and old_state != "CSC Verified") or (new_state == "Resolved" and old_state != "Resolved"):
-			frappe.db.set_value("Complain", self.name, "resolution_date", today(), update_modified=False)
+			from hanif_traders.api.complain import mark_resolved_without_csc
+			mark_resolved_without_csc(self.name)
+			#frappe.db.set_value("Complain", self.name, "resolution_date", today(), update_modified=False)
 		
 		if msg:
 			try:
