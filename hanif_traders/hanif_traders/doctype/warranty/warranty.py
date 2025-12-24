@@ -17,6 +17,9 @@ class Warranty(Document):
 			# Calculate and update balance for each row
 			row_balance = flt(row.quantity_received) - flt(row.quantity_claimed) - flt(row.replacement_quantity)
 			row.balance_quantity = row_balance
+
+			if self.claim_settlement_type == "Credit Note" and row.quantity_claimed > 0 and flt(row.rate) <= 0:
+				frappe.throw(f"Row #{row.idx}: Rate cannot be zero when Claim Settlement Type is 'Credit Note' and Quantity Claimed is greater than zero.")
 			
 			total_received += flt(row.quantity_received)
 			total_claimed += flt(row.quantity_claimed) + flt(row.replacement_quantity)
