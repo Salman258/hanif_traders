@@ -4,6 +4,25 @@
 frappe.ui.form.on("Warranty", {
     refresh(frm) {
         frm.trigger("set_item_query");
+        frm.trigger("render_credit_note_details");
+    },
+    render_credit_note_details(frm) {
+        if (frm.doc.claim_settlement_type === "Credit Note" && !frm.is_new()) {
+            frappe.call({
+                method: "get_credit_note_details_html",
+                doc: frm.doc,
+                callback: function (r) {
+                    if (r.message) {
+                        frm.set_df_property("credit_note_details", "hidden", 0);
+                        frm.fields_dict.credit_note_details.$wrapper.html(r.message);
+                    } else {
+                        frm.set_df_property("credit_note_details", "hidden", 1);
+                    }
+                }
+            });
+        } else {
+            frm.set_df_property("credit_note_details", "hidden", 1);
+        }
     },
     item_group(frm) {
         frm.trigger("set_item_query");

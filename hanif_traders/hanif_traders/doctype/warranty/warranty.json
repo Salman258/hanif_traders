@@ -1,266 +1,288 @@
 {
- "actions": [],
- "allow_rename": 1,
- "autoname": "format:HTW{MM}{YY}{#####}",
- "creation": "2025-06-06 12:18:16.652843",
- "doctype": "DocType",
- "engine": "InnoDB",
- "field_order": [
-  "section_break_os91",
-  "amended_from",
-  "warranty_for",
-  "technician",
-  "customer",
-  "customer_name",
-  "customer_contact",
-  "mobile_number",
-  "column_break_xwva",
-  "date",
-  "posting_time",
-  "claim_settlement_type",
-  "journal_entry",
-  "book_reference_no",
-  "receiver_name",
-  "receiver_contact",
-  "section_break_warehouse",
-  "default_receipt_warehouse",
-  "column_break_akvf",
-  "default_claim_warehouse",
-  "section_break_beuq",
-  "item_group",
-  "warranty_item_detail",
-  "section_break_qqzi",
-  "total_items_received",
-  "column_break_dvmu",
-  "total_items_claimed",
-  "column_break_uktl",
-  "total_items_balanced",
-  "section_break_dbxx",
-  "warranty_remarks"
- ],
- "fields": [
-  {
-   "fieldname": "section_break_os91",
-   "fieldtype": "Section Break",
-   "label": "Customer Details"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Warranty",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
-  },
-  {
-   "depends_on": "eval:doc.warranty_for == 'Customer'",
-   "fieldname": "customer",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Customer",
-   "options": "Customer"
-  },
-  {
-   "depends_on": "eval:doc.warranty_for == 'Customer'",
-   "fetch_from": "customer.customer_name",
-   "fieldname": "customer_name",
-   "fieldtype": "Data",
-   "label": "Customer Name",
-   "read_only": 1
-  },
-  {
-   "depends_on": "eval:doc.warranty_for == 'Customer'",
-   "fetch_from": "customer.customer_primary_contact",
-   "fieldname": "customer_contact",
-   "fieldtype": "Data",
-   "label": "Contact"
-  },
-  {
-   "depends_on": "eval:doc.warranty_for == 'Customer'",
-   "fetch_from": "customer.mobile_no",
-   "fieldname": "mobile_number",
-   "fieldtype": "Data",
-   "label": "Mobile Number"
-  },
-  {
-   "fieldname": "column_break_xwva",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "Today",
-   "fieldname": "date",
-   "fieldtype": "Date",
-   "label": "Date"
-  },
-  {
-   "default": "Now",
-   "fieldname": "posting_time",
-   "fieldtype": "Time",
-   "label": "Posting Time"
-  },
-  {
-   "fieldname": "section_break_beuq",
-   "fieldtype": "Section Break",
-   "label": "Warranty Items"
-  },
-  {
-   "fieldname": "item_group",
-   "fieldtype": "Link",
-   "label": "Linked to Item Group",
-   "options": "Item Group"
-  },
-  {
-   "fieldname": "warranty_item_detail",
-   "fieldtype": "Table",
-   "options": "warranty item"
-  },
-  {
-   "fieldname": "section_break_qqzi",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "total_items_received",
-   "fieldtype": "Data",
-   "label": "Total Items Received",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_dvmu",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "total_items_claimed",
-   "fieldtype": "Data",
-   "label": "Total Items Claimed",
-   "read_only": 1
-  },
-  {
-   "fieldname": "column_break_uktl",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "total_items_balanced",
-   "fieldtype": "Data",
-   "label": "Total Items Balanced",
-   "read_only": 1
-  },
-  {
-   "fieldname": "warranty_for",
-   "fieldtype": "Select",
-   "label": "Warranty For",
-   "options": "Customer\nTechnician"
-  },
-  {
-   "depends_on": "eval:doc.warranty_for == 'Technician'",
-   "fieldname": "technician",
-   "fieldtype": "Link",
-   "label": "Technician",
-   "options": "Technician"
-  },
-  {
-   "fieldname": "claim_settlement_type",
-   "fieldtype": "Select",
-   "label": "Claim Settlement Type",
-   "options": "Replacement\nCredit Note"
-  },
-  {
-   "fieldname": "section_break_warehouse",
-   "fieldtype": "Section Break",
-   "label": "Warehouse Details"
-  },
-  {
-   "fieldname": "default_receipt_warehouse",
-   "fieldtype": "Link",
-   "label": "Default Receipt Warehouse",
-   "options": "Warehouse"
-  },
-  {
-   "fieldname": "default_claim_warehouse",
-   "fieldtype": "Link",
-   "label": "Default Claim Warehouse",
-   "options": "Warehouse"
-  },
-  {
-   "fieldname": "section_break_dbxx",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "warranty_remarks",
-   "fieldtype": "Small Text",
-   "label": "Remarks"
-  },
-  {
-   "fieldname": "column_break_akvf",
-   "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "journal_entry",
-   "fieldtype": "Link",
-   "label": "Journal Entry",
-   "options": "Journal Entry",
-   "read_only": 1
-  },
-  {
-   "fieldname": "book_reference_no",
-   "fieldtype": "Data",
-   "label": "Book Reference No"
-  },
-  {
-   "fieldname": "receiver_name",
-   "fieldtype": "Data",
-   "label": "Receiver Name"
-  },
-  {
-   "fieldname": "receiver_contact",
-   "fieldtype": "Data",
-   "label": "Receiver Contact"
-  }
- ],
- "grid_page_length": 50,
- "index_web_pages_for_search": 1,
- "is_submittable": 1,
- "links": [],
- "modified": "2025-12-23 14:12:37.710449",
- "modified_by": "Administrator",
- "module": "Hanif Traders",
- "name": "Warranty",
- "naming_rule": "Expression",
- "owner": "Administrator",
- "permissions": [
-  {
-   "amend": 1,
-   "cancel": 1,
-   "create": 1,
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "select": 1,
-   "share": 1,
-   "submit": 1,
-   "write": 1
-  },
-  {
-   "delete": 1,
-   "email": 1,
-   "export": 1,
-   "permlevel": 1,
-   "print": 1,
-   "read": 1,
-   "report": 1,
-   "role": "System Manager",
-   "select": 1,
-   "share": 1,
-   "write": 1
-  }
- ],
- "row_format": "Dynamic",
- "sort_field": "modified",
- "sort_order": "DESC",
- "states": []
+    "actions": [],
+    "allow_rename": 1,
+    "autoname": "format:HTW{MM}{YY}{#####}",
+    "creation": "2025-06-06 12:18:16.652843",
+    "doctype": "DocType",
+    "engine": "InnoDB",
+    "field_order": [
+        "section_break_os91",
+        "amended_from",
+        "warranty_for",
+        "technician",
+        "customer",
+        "customer_name",
+        "customer_contact",
+        "mobile_number",
+        "column_break_xwva",
+        "date",
+        "posting_time",
+        "claim_settlement_type",
+        "journal_entry",
+        "book_reference_no",
+        "receiver_name",
+        "receiver_contact",
+        "price_list",
+        "section_break_warehouse",
+        "default_receipt_warehouse",
+        "column_break_akvf",
+        "default_claim_warehouse",
+        "section_break_beuq",
+        "item_group",
+        "warranty_item_detail",
+        "section_break_qqzi",
+        "total_items_received",
+        "column_break_dvmu",
+        "total_items_claimed",
+        "column_break_uktl",
+        "total_items_balanced",
+        "section_break_dbxx",
+        "warranty_remarks",
+        "credit_note_details_section",
+        "credit_note_details"
+    ],
+    "fields": [
+        {
+            "fieldname": "section_break_os91",
+            "fieldtype": "Section Break",
+            "label": "Customer Details"
+        },
+        {
+            "fieldname": "amended_from",
+            "fieldtype": "Link",
+            "label": "Amended From",
+            "no_copy": 1,
+            "options": "Warranty",
+            "print_hide": 1,
+            "read_only": 1,
+            "search_index": 1
+        },
+        {
+            "depends_on": "eval:doc.warranty_for == 'Customer'",
+            "fieldname": "customer",
+            "fieldtype": "Link",
+            "in_list_view": 1,
+            "label": "Customer",
+            "options": "Customer"
+        },
+        {
+            "depends_on": "eval:doc.warranty_for == 'Customer'",
+            "fetch_from": "customer.customer_name",
+            "fieldname": "customer_name",
+            "fieldtype": "Data",
+            "label": "Customer Name",
+            "read_only": 1
+        },
+        {
+            "depends_on": "eval:doc.warranty_for == 'Customer'",
+            "fetch_from": "customer.customer_primary_contact",
+            "fieldname": "customer_contact",
+            "fieldtype": "Data",
+            "label": "Contact"
+        },
+        {
+            "depends_on": "eval:doc.warranty_for == 'Customer'",
+            "fetch_from": "customer.mobile_no",
+            "fieldname": "mobile_number",
+            "fieldtype": "Data",
+            "label": "Mobile Number"
+        },
+        {
+            "fieldname": "column_break_xwva",
+            "fieldtype": "Column Break"
+        },
+        {
+            "default": "Today",
+            "fieldname": "date",
+            "fieldtype": "Date",
+            "label": "Date"
+        },
+        {
+            "default": "Now",
+            "fieldname": "posting_time",
+            "fieldtype": "Time",
+            "label": "Posting Time"
+        },
+        {
+            "fieldname": "section_break_beuq",
+            "fieldtype": "Section Break",
+            "label": "Warranty Items"
+        },
+        {
+            "fieldname": "item_group",
+            "fieldtype": "Link",
+            "label": "Linked to Item Group",
+            "options": "Item Group"
+        },
+        {
+            "fieldname": "warranty_item_detail",
+            "fieldtype": "Table",
+            "options": "warranty item"
+        },
+        {
+            "fieldname": "section_break_qqzi",
+            "fieldtype": "Section Break"
+        },
+        {
+            "fieldname": "total_items_received",
+            "fieldtype": "Data",
+            "label": "Total Items Received",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_dvmu",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "total_items_claimed",
+            "fieldtype": "Data",
+            "label": "Total Items Claimed",
+            "read_only": 1
+        },
+        {
+            "fieldname": "column_break_uktl",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "total_items_balanced",
+            "fieldtype": "Data",
+            "label": "Total Items Balanced",
+            "read_only": 1
+        },
+        {
+            "fieldname": "warranty_for",
+            "fieldtype": "Select",
+            "label": "Warranty For",
+            "options": "Customer\nTechnician"
+        },
+        {
+            "depends_on": "eval:doc.warranty_for == 'Technician'",
+            "fieldname": "technician",
+            "fieldtype": "Link",
+            "label": "Technician",
+            "options": "Technician"
+        },
+        {
+            "fieldname": "claim_settlement_type",
+            "fieldtype": "Select",
+            "label": "Claim Settlement Type",
+            "options": "Replacement\nCredit Note"
+        },
+        {
+            "fieldname": "section_break_warehouse",
+            "fieldtype": "Section Break",
+            "label": "Warehouse Details"
+        },
+        {
+            "fieldname": "default_receipt_warehouse",
+            "fieldtype": "Link",
+            "label": "Default Receipt Warehouse",
+            "options": "Warehouse"
+        },
+        {
+            "fieldname": "default_claim_warehouse",
+            "fieldtype": "Link",
+            "label": "Default Claim Warehouse",
+            "options": "Warehouse"
+        },
+        {
+            "fieldname": "section_break_dbxx",
+            "fieldtype": "Section Break",
+            "label": "Remarks"
+        },
+        {
+            "fieldname": "warranty_remarks",
+            "fieldtype": "Small Text",
+            "label": "Remarks"
+        },
+        {
+            "fieldname": "column_break_akvf",
+            "fieldtype": "Column Break"
+        },
+        {
+            "fieldname": "journal_entry",
+            "fieldtype": "Link",
+            "label": "Journal Entry",
+            "options": "Journal Entry",
+            "read_only": 1
+        },
+        {
+            "fieldname": "book_reference_no",
+            "fieldtype": "Data",
+            "label": "Book Reference No"
+        },
+        {
+            "fieldname": "receiver_name",
+            "fieldtype": "Data",
+            "label": "Receiver Name"
+        },
+        {
+            "fieldname": "receiver_contact",
+            "fieldtype": "Data",
+            "label": "Receiver Contact"
+        },
+        {
+            "fieldname": "credit_note_details_section",
+            "fieldtype": "Section Break",
+            "label": "Credit Note Details"
+        },
+        {
+            "depends_on": "eval:doc.claim_settlement_type == 'Credit Note'",
+            "fieldname": "credit_note_details",
+            "fieldtype": "HTML",
+            "label": "Credit Note Details"
+        },
+        {
+            "depends_on": "eval:doc.claim_settlement_type == 'Credit Note'",
+            "fieldname": "price_list",
+            "fieldtype": "Link",
+            "label": "Price List",
+            "options": "Price List"
+        }
+    ],
+    "grid_page_length": 50,
+    "index_web_pages_for_search": 1,
+    "is_submittable": 1,
+    "links": [],
+    "modified": "2025-12-24 15:37:51.857981",
+    "modified_by": "Administrator",
+    "module": "Hanif Traders",
+    "name": "Warranty",
+    "naming_rule": "Expression",
+    "owner": "Administrator",
+    "permissions": [
+        {
+            "amend": 1,
+            "cancel": 1,
+            "create": 1,
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "select": 1,
+            "share": 1,
+            "submit": 1,
+            "write": 1
+        },
+        {
+            "delete": 1,
+            "email": 1,
+            "export": 1,
+            "permlevel": 1,
+            "print": 1,
+            "read": 1,
+            "report": 1,
+            "role": "System Manager",
+            "select": 1,
+            "share": 1,
+            "write": 1
+        }
+    ],
+    "row_format": "Dynamic",
+    "sort_field": "modified",
+    "sort_order": "DESC",
+    "states": []
 }

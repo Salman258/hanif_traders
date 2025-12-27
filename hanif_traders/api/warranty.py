@@ -35,7 +35,6 @@ def create_stock_entry(warranty_doc, purpose, items, warehouse_field, required_f
 		frappe.log_error(f"Stock Entry Creation Failed for {warranty_doc.name}", str(e))
 		frappe.throw(f"Failed to create Stock Entry: {str(e)}")
 
-
 def create_journal_entry(warranty_doc, claimed_items):
 	if not claimed_items:
 		return
