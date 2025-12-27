@@ -251,6 +251,7 @@ class Warranty(Document):
 						<td style="text-align: right;">{flt(row.quantity_claimed, 2)}</td>
 						<td style="text-align: right;">{frappe.format(row.price_list_rate, "Currency", currency=currency)}</td>
 						<td style="text-align: right;">{flt(row.discount)}%</td>
+						<td style="text-align: right;">{frappe.format(row.rate, "Currency", currency=currency)}</td>
 						<td style="text-align: right;">{frappe.format(row.amount, "Currency", currency=currency)}</td>
 					</tr>
 				""")
@@ -264,16 +265,18 @@ class Warranty(Document):
 		html = f"""
 			<table class="table table-bordered" style="width: 100%; table-layout: fixed;">
 				<tbody>
-					<tr style="font-weight: bold; background-color: #f0f0f0;">
+					<tr style="font-weight: bold;">
 						<td style="width: 5%">S. No.</td>
 						<td style="width: 45%">Item Code: Item Name</td>
 						<td style="width: 10%; text-align: right;">Quantity Claimed</td>
 						<td style="width: 15%; text-align: right;">Price List Rate</td>
 						<td style="width: 10%; text-align: right;">Discount %</td>
+						<td style="width: 15%; text-align: right;">Rate</td>
 						<td style="width: 15%; text-align: right;">Amount</td>
 					</tr>
 					{"".join(rows)}
 					<tr style="font-weight: bold">
+						<td></td>
 						<td></td>
 						<td></td>
 						<td></td>
