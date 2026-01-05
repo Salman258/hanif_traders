@@ -82,3 +82,23 @@ def bulk_assign(complain_names, technician):
         msg += f" {len(errors)} failed (check Error Log)."
     
     return {"ok": True, "message": msg}
+
+@frappe.whitelist()
+def get_open_complain():
+    try:
+        complains = frappe.get_list(
+            "Complain",
+            filters={
+                "workflow_state": "Open"
+            },
+            fields=["*"]
+        )
+
+        for complain in complains:
+            if "complain_csc" in complain:
+                del complain["complain_csc"]
+        
+        return {"status": "success", "data": complains}
+    except Exception as e:
+        frappe.log_error(title="get_open_complain Error", message=frappe.get_traceback())
+        return {"status": "fail", "message": "Failed to fetch open complaints"}
