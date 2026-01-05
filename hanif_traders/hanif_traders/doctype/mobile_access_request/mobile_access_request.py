@@ -36,7 +36,7 @@ class MobileAccessRequest(Document):
 		# Store credentials on request (for mobile pickup)
 		self.db_set({
 			"api_key": user_doc.api_key,
-			"api_secret": api_scret,
+			"api_secret": api_secret,
 			"approved_by": frappe.session.user,
 			"approved_on": now_datetime(),
 		}, update_modified=False)
