@@ -34,7 +34,7 @@ def verify_csc(complain_name, input_code):
     frappe.db.set_value("Complain", complain_name, "time_to_resolution", formatted_time, update_modified=False)
 
     # Process Incentives
-    from hanif_traders.api.technician_incentive import process_incentive
+    from hanif_traders.api.technician import process_incentive
     msg = process_incentive(complain_name, "CSC_VERIFIED")
 
     return {"ok": True, "message": f"{complain_name} marked 'CSC Verified'. {msg}"}
@@ -49,7 +49,7 @@ def mark_resolved_without_csc(complain_name):
     complaint.db_set("resolution_date", today(), update_modified=False)
 
     # Process Incentives
-    from hanif_traders.api.technician_incentive import process_incentive
+    from hanif_traders.api.technician import process_incentive
     msg = process_incentive(complain_name, "RESOLVED_NO_CSC")
     return {"ok": True, "message": f"Resolved without CSC. {msg}"}
 

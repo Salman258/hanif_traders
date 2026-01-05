@@ -168,3 +168,27 @@ def _update_technician_points(tech_name, points):
         SET technician_points = COALESCE(technician_points, 0) + %s
         WHERE name = %s
     """, (points, tech_name))
+
+@frappe.whitelist()
+def get_technician_profile():
+
+    email = frappe.session.user
+
+    if not email:
+        return {"status": "fail", "message": "Email is required"}
+        
+    employee_name = frappe.db.get_value("Employee", {"user_id": email}, "name")
+    if not employee_name:
+        employee_name = frappe.db.get_value("Employee", {"company_email": email}, "name")
+    if not employee_name:
+        employee_name = frappe.db.get_value("Employee", {"personal_email": email}, "name")
+    
+    if not employee_name:
+        return {"status": "fail", "message": "No Employee found with this email"}
+
+    tech_name = frappe.db.get_value("Technician", {"employee_id": employee_name}, "name")
+
+    if not tech_name:
+        return {"status": "fail", "message": "No Technician profile found for this Employee"}
+
+    return {"status": "success", "profile": frappe.get_doc("Technician", tech_name).as_dict()}

@@ -5,7 +5,7 @@ import frappe
 import unittest
 from unittest.mock import patch
 from frappe.utils import today, now_datetime, add_to_date, get_datetime
-from hanif_traders.api.technician_incentive import process_incentive
+from hanif_traders.api.technician import process_incentive
 
 class TestComplain(unittest.TestCase):
     def setUp(self):
