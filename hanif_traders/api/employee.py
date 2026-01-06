@@ -46,3 +46,23 @@ def create_user_for_employee(employee):
         emp_doc.save(ignore_permissions=True)
 
     return user_name
+
+def sync_technician_details(doc, method):
+    """
+    Syncs Employee details to the linked Technician record on update.
+    """
+    # Check if a Technician is linked to this Employee
+    tech_name = frappe.db.get_value("Technician", {"employee_id": doc.name}, "name")
+    
+    if tech_name:
+        tech_doc = frappe.get_doc("Technician", tech_name)
+        
+        # Update fields
+        tech_doc.cnic = doc.custom_cnic
+        tech_doc.cnic_image = doc.custom_cnic_image
+        tech_doc.phone_number = doc.custom_phone_number
+        tech_doc.address = doc.current_address
+        tech_doc.technician_name = doc.employee_name
+        tech_doc.technician_age = doc.custom_age
+        
+        tech_doc.save(ignore_permissions=True)

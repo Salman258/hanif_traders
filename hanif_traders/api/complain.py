@@ -84,21 +84,56 @@ def bulk_assign(complain_names, technician):
     return {"ok": True, "message": msg}
 
 @frappe.whitelist()
-def get_open_complain():
-    try:
-        complains = frappe.get_list(
-            "Complain",
-            filters={
-                "workflow_state": "Open"
-            },
-            fields=["*"]
-        )
+def get_complains(status=None):
+    user = frappe.session.user
+    if not user or user == "Guest":
+        return {"ok": False, "message": "Unauthorized"}
+    
+    employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
+    technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
 
-        for complain in complains:
-            if "complain_csc" in complain:
-                del complain["complain_csc"]
-        
-        return {"status": "success", "data": complains}
-    except Exception as e:
-        frappe.log_error(title="get_open_complain Error", message=frappe.get_traceback())
-        return {"status": "fail", "message": "Failed to fetch open complaints"}
+    filters = {}
+    
+    if status != "Open":
+        filters["assigned_to_technician"] = technician
+
+    if status:
+        if isinstance(status, list):
+            filters["workflow_state"] = ["in", status]
+        else:
+            filters["workflow_state"] = status
+
+    complains = frappe.get_all(
+        "Complain",
+        filters=filters,
+        fields=["*"]
+    )
+
+    for complain in complains:
+        if "complain_csc" in complain:
+            del complain["complain_csc"]
+            
+    return {"status": "success", "data": complains}
+
+@frappe.whitelist()
+def get_complain_count(status=None):
+    user = frappe.session.user
+    if not user or user == "Guest":
+        return {"ok": False, "message": "Unauthorized"}
+    
+    employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
+    technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
+
+    filters = {}
+    
+    if status != "Open":
+        filters["assigned_to_technician"] = technician
+
+    if status:
+        if isinstance(status, list):
+            filters["workflow_state"] = ["in", status]
+        else:
+            filters["workflow_state"] = status
+
+    count = frappe.db.count("Complain", filters=filters)
+    return {"status": "success", "count": count}

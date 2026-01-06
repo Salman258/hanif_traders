@@ -191,7 +191,8 @@ app_include_js = ["/assets/hanif_traders/js/stock_check_dialog.js"]
 
 doc_events = {
 	"Employee": {
-		"validate": "hanif_traders.api.employee.calculate_age"
+		"validate": "hanif_traders.api.employee.calculate_age",
+        "on_update": "hanif_traders.api.employee.sync_technician_details"
 	},
     "Purchase Receipt": {
         "validate": "hanif_traders.api.purchase_receipt.explode_bundle_items",
