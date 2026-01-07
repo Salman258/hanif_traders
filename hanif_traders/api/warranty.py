@@ -86,6 +86,3 @@ def create_journal_entry(warranty_doc, claimed_items):
 	
 	warranty_doc.db_set("journal_entry", je.name)
 	frappe.msgprint(f"✅ Journal Entry {je.name} created for Credit Note")
-
-
-

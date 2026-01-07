@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import now_datetime, get_datetime, getdate
+from datetime import datetime, time
 
 @frappe.whitelist(methods=["POST"])
 def ingest(latitude, longitude, accuracy=None, speed=None, heading=None, altitude=None, captured_at=None, device_id=None, source="foreground"):
@@ -134,12 +135,15 @@ def get_latest_locations(on_duty_only=True):
 
         if on_duty_only and not checkin_name:
             continue
+            
+        loc_filters = {"technician": tech.name}
+        if on_duty_only:
+             # Strict: Only show location from CURRENT active shift
+             loc_filters["employee_checkin"] = checkin_name
+
         last_loc = frappe.db.get_value(
             "Technician Location Log",
-            {
-                "technician": tech.name,
-                "employee_checkin": checkin_name,
-            },
+            loc_filters,
             ["latitude", "longitude", "captured_at"],
             order_by="captured_at desc",
             as_dict=True,
