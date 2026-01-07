@@ -5,6 +5,10 @@ from frappe.utils import time_diff_in_hours, now_datetime, get_datetime
 
 @frappe.whitelist()
 def verify_csc(complain_name, input_code):
+    user = frappe.session.user
+    if not user or user == "Guest":
+        return {"ok": False, "message": "Unauthorized"}
+
     complaint = frappe.get_doc("Complain", complain_name)
     tech = complaint.assigned_to_technician
     if not tech:
@@ -34,13 +38,20 @@ def verify_csc(complain_name, input_code):
     frappe.db.set_value("Complain", complain_name, "time_to_resolution", formatted_time, update_modified=False)
 
     # Process Incentives
-    from hanif_traders.api.technician import process_incentive
+    from hanif_traders.api.technician import process_incentive, update_avg_resolution_time
     msg = process_incentive(complain_name, "CSC_VERIFIED")
+    
+    # Update Avg Resolution Time
+    update_avg_resolution_time(tech)
 
     return {"ok": True, "message": f"{complain_name} marked 'CSC Verified'. {msg}"}
 
 @frappe.whitelist()
 def mark_resolved_without_csc(complain_name):
+    user = frappe.session.user
+    if not user or user == "Guest":
+        return {"ok": False, "message": "Unauthorized"}
+
     complaint = frappe.get_doc("Complain", complain_name)
     if not complaint.assigned_to_technician:
         frappe.throw("Assigned Technician not set on this Complain")
@@ -49,12 +60,19 @@ def mark_resolved_without_csc(complain_name):
     complaint.db_set("resolution_date", today(), update_modified=False)
 
     # Process Incentives
-    from hanif_traders.api.technician import process_incentive
+    from hanif_traders.api.technician import process_incentive, update_avg_resolution_time
     msg = process_incentive(complain_name, "RESOLVED_NO_CSC")
+    
+    # Update Avg Resolution Time
+    update_avg_resolution_time(complaint.assigned_to_technician)
     return {"ok": True, "message": f"Resolved without CSC. {msg}"}
 
 @frappe.whitelist()
 def bulk_assign(complain_names, technician):
+    user = frappe.session.user
+    if not user or user == "Guest":
+        return {"ok": False, "message": "Unauthorized"}
+
     import json
     if isinstance(complain_names, str):
         complain_names = json.loads(complain_names)

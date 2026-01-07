@@ -169,6 +169,24 @@ def _update_technician_points(tech_name, points):
         WHERE name = %s
     """, (points, tech_name))
 
+def update_avg_resolution_time(tech_name):
+    # Calculate average time_to_resolution for this technician
+    data = frappe.db.sql("""
+        SELECT AVG(time_to_resolution)
+        FROM `tabComplain`
+        WHERE assigned_to_technician = %s
+        AND workflow_state IN ('CSC Verified', 'Resolved', 'Closed')
+        AND time_to_resolution > 0
+    """, (tech_name))
+    
+    avg_time = flt(data[0][0]) if data and data[0][0] else 0.0
+    
+    frappe.db.sql("""
+        UPDATE `tabTechnician`
+        SET avg_time_to_resolution = %s
+        WHERE name = %s
+    """, (avg_time, tech_name))
+
 @frappe.whitelist()
 def get_technician_profile():
 
@@ -192,3 +210,34 @@ def get_technician_profile():
         return {"status": "fail", "message": "No Technician profile found for this Employee"}
 
     return {"status": "success", "profile": frappe.get_doc("Technician", tech_name).as_dict()}
+
+@frappe.whitelist()
+def duty_status():
+    user = frappe.session.user
+    if not user or user == "Guest":
+         return {"status": "fail", "message": "Unauthorized"}
+    
+    employee_name = frappe.db.get_value("Employee", {"user_id": user}, "name")
+    if not employee_name:
+         employee_name = frappe.db.get_value("Employee", {"company_email": user}, "name")
+    if not employee_name:
+         employee_name = frappe.db.get_value("Employee", {"personal_email": user}, "name")
+         
+    if not employee_name:
+         return {"status": "fail", "message": "Employee not found for this user."}
+
+    last_checkin = frappe.db.get_value("Employee Checkin", 
+        {"employee": employee_name}, 
+        "log_type", 
+        order_by="time desc"
+    )
+
+    status = "OFF DUTY"
+    if last_checkin and last_checkin == "IN":
+        status = "ON DUTY"
+
+    return {"status": "success", "duty_status": status}
+
+
+
+

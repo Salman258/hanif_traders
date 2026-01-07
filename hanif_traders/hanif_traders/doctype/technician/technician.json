@@ -18,7 +18,8 @@
         "column_break_hzbi",
         "employee_id",
         "technician_points",
-        "incentive_earned"
+        "incentive_earned",
+        "avg_time_to_resolution"
     ],
     "fields": [
         {
@@ -97,8 +98,13 @@
         },
         {
             "fieldname": "incentive_earned",
-            "fieldtype": "Currency",
             "label": "Incentive Earned",
+            "read_only": 1
+        },
+        {
+            "fieldname": "avg_time_to_resolution",
+            "fieldtype": "Float",
+            "label": "Average Resolution Time (Hours)",
             "read_only": 1
         }
     ],

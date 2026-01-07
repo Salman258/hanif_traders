@@ -204,13 +204,13 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
+scheduler_events = {
 # 	"all": [
 # 		"hanif_traders.tasks.all"
 # 	],
-# 	"daily": [
-# 		"hanif_traders.tasks.daily"
-# 	],
+	"daily": [
+		"hanif_traders.api.employee.auto_checkout_employees"
+	],
 # 	"hourly": [
 # 		"hanif_traders.tasks.hourly"
 # 	],
@@ -220,7 +220,7 @@ doc_events = {
 # 	"monthly": [
 # 		"hanif_traders.tasks.monthly"
 # 	],
-# }
+}
 
 # Testing
 # -------
