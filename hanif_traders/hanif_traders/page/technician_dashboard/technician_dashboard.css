@@ -1,4 +1,251 @@
+/* technician_dashboard.css */
+
+:root {
+    --dashboard-bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --accent-color: #3b82f6;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+:fullscreen {
+    background-color: var(--dashboard-bg);
+    overflow-y: auto;
+}
+
+::backdrop {
+    background-color: #fff;
+}
 
 .technician-dashboard {
-    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-primary);
+    background-color: var(--dashboard-bg);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    min-height: 80vh;
+}
+
+/* --- Layout --- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+}
+
+.col-full {
+    grid-column: span 12;
+}
+
+.col-half {
+    grid-column: span 6;
+}
+
+.col-third {
+    grid-column: span 4;
+}
+
+.col-two-thirds {
+    grid-column: span 8;
+}
+
+/* --- Cards --- */
+.dashboard-card {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    padding: 24px;
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* --- Metric Cards (KPIs) --- */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.metric-card {
+    background: white;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #e5e7eb;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.metric-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: var(--accent-color);
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin: 8px 0;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+}
+
+/* --- Map --- */
+.map-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    border: 1px solid #e5e7eb;
+    height: 500px;
+    position: relative;
+    background: #e5e7eb;
+}
+
+#technician-map {
+    width: 100%;
+    height: 100%;
+}
+
+:fullscreen .map-container {
+    height: 75vh !important;
+}
+
+.technician-marker {
+    background: transparent;
+    text-align: center;
+}
+
+.technician-marker div {
+    transition: transform 0.2s;
+}
+
+.technician-marker:hover div {
+    transform: scale(1.2);
+}
+
+/* --- Leaderboard --- */
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.leaderboard-item:last-child {
+    border-bottom: none;
+}
+
+.rank-badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.rank-1 .rank-badge {
+    background: #fee2e2;
+    color: #ef4444;
+}
+
+/* Should be Gold/Yellow really, but using red for visibility or custom */
+.rank-1 .rank-badge {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+/* Correct Gold */
+.rank-2 .rank-badge {
+    background: #F3F4F6;
+    color: #4B5563;
+}
+
+/* Silver/Grey */
+.rank-3 .rank-badge {
+    background: #FFEDD5;
+    color: #C2410C;
+}
+
+/* Bronze */
+
+.tech-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tech-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
+.tech-score-badge {
+    background: #ecfdf5;
+    color: #059669;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* --- Utilities --- */
+.text-muted {
+    color: var(--text-secondary);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-4 {
+    margin-top: 1rem;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
 }

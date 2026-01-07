@@ -52,16 +52,39 @@ def get_dashboard_stats():
     }
 
 @frappe.whitelist()
-def get_leaderboard():
-    # Top 10 by resolved complaints (All Time)
-    data = frappe.db.sql("""
-        SELECT t.technician_name as technician, COUNT(c.name) as count
-        FROM `tabComplain` c
-        JOIN `tabTechnician` t ON c.assigned_to_technician = t.name
-        WHERE c.workflow_state IN ('Resolved', 'Closed', 'CSC Verified')
-        GROUP BY c.assigned_to_technician
+def get_leaderboard(timespan="all_time"):
+    # Top 10 by Points
+    # timespan: today, week, month, all_time
+    
+    date_filter = ""
+    params = {}
+    
+    if timespan == "today":
+        date_filter = "AND tpl.posting_date = %(today)s"
+        params["today"] = nowdate()
+    elif timespan == "week":
+        # Current week (Monday to Sunday)
+        from frappe.utils import get_first_day_of_week
+        date_filter = "AND tpl.posting_date >= %(start_date)s"
+        params["start_date"] = get_first_day_of_week(nowdate())
+    elif timespan == "month":
+        # Current month
+        date_filter = "AND tpl.posting_date >= %(start_date)s"
+        from frappe.utils import get_first_day, getdate
+        today = nowdate()
+        params["start_date"] = getdate(today).replace(day=1)
+    
+    # Otherwise all_time (no date filter)
+
+    data = frappe.db.sql(f"""
+        SELECT t.technician_name as technician, SUM(tpl.points) as count
+        FROM `tabTechnician Points Log` tpl
+        JOIN `tabTechnician` t ON tpl.technician = t.name
+        WHERE tpl.points > 0
+        {date_filter}
+        GROUP BY tpl.technician
         ORDER BY count DESC
         LIMIT 10
-    """, as_dict=True)
+    """, params, as_dict=True)
     
     return data
