@@ -225,7 +225,7 @@ class Warranty(Document):
 				}
 				
 				details = get_item_details(args)
-				frappe.msgprint(f"✅ Pricing details: {details}")
+				# frappe.msgprint(f"✅ Pricing details: {details}")
 				
 				if details:
 					row.price_list_rate = details.get("price_list_rate")
