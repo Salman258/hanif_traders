@@ -205,10 +205,12 @@ class TechnicianDashboard {
                     iconAnchor: [15, 15]
                 });
 
+                var time_diff = this.get_time_diff(loc.captured_at);
+
                 var marker = L.marker(latlng, { icon: technician_icon }).bindTooltip(`
                     <div style="text-align:center; line-height:1.2;">
-                        <strong style="font-size:1.05em; color:#374151; display:block; margin-bottom:2px;">${loc.technician}</strong>
-                        <span style="color:#6B7280; font-size:0.85em;">🕒 ${loc.captured_at}</span>
+                        <strong style="font-size:1.05em; color:#374151; display:block; margin-bottom:2px;">${loc.technician_name}</strong>
+                        <span style="color:#6B7280; font-size:0.85em;">🕒 ${time_diff}</span>
                     </div>
                 `, {
                     permanent: true,
@@ -222,6 +224,18 @@ class TechnicianDashboard {
 
             this.map.fitBounds(bounds, { padding: [50, 50] });
         }
+    }
+
+    get_time_diff(captured_at) {
+        if (!captured_at) return "";
+        var now = new Date();
+        var captured = new Date(captured_at);
+        var diff = (now - captured) / 1000; // seconds
+
+        if (diff < 60) return Math.floor(diff) + " sec ago";
+        if (diff < 3600) return Math.floor(diff / 60) + " min ago";
+        if (diff < 86400) return Math.floor(diff / 3600) + " hr ago";
+        return Math.floor(diff / 86400) + " days ago";
     }
 
     fetch_leaderboard(timespan = "all_time") {

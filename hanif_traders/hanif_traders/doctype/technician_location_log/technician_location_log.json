@@ -1,206 +1,211 @@
 {
-    "actions": [],
-    "allow_rename": 0,
-    "autoname": "hash",
-    "creation": "2026-01-07 14:00:00.000000",
-    "default_view": "List",
-    "doctype": "DocType",
-    "editable_grid": 1,
-    "engine": "InnoDB",
-    "field_order": [
-        "identity_section",
-        "technician",
-        "employee",
-        "employee_checkin",
-        "column_break_identity",
-        "device_id",
-        "source",
-        "telemetry_section",
-        "latitude",
-        "longitude",
-        "accuracy",
-        "column_break_telemetry",
-        "speed",
-        "heading",
-        "altitude",
-        "time_and_diagnostics_section",
-        "captured_at",
-        "received_at",
-        "column_break_diagnostics",
-        "battery_level",
-        "network_type",
-        "system_and_control_section",
-        "is_valid",
-        "reject_reason",
-        "notes"
-    ],
-    "fields": [
-        {
-            "fieldname": "identity_section",
-            "fieldtype": "Section Break",
-            "label": "Identity"
-        },
-        {
-            "fieldname": "technician",
-            "fieldtype": "Link",
-            "in_list_view": 1,
-            "label": "Technician",
-            "options": "Technician",
-            "reqd": 1
-        },
-        {
-            "fieldname": "employee",
-            "fieldtype": "Link",
-            "label": "Employee",
-            "options": "Employee",
-            "read_only": 1
-        },
-        {
-            "fieldname": "employee_checkin",
-            "fieldtype": "Link",
-            "label": "Employee Checkin",
-            "options": "Employee Checkin"
-        },
-        {
-            "fieldname": "column_break_identity",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "device_id",
-            "fieldtype": "Data",
-            "label": "Device ID"
-        },
-        {
-            "fieldname": "source",
-            "fieldtype": "Select",
-            "label": "Source",
-            "options": "foreground\nbackground"
-        },
-        {
-            "fieldname": "telemetry_section",
-            "fieldtype": "Section Break",
-            "label": "Location Telemetry"
-        },
-        {
-            "fieldname": "latitude",
-            "fieldtype": "Float",
-            "in_list_view": 1,
-            "label": "Latitude",
-            "precision": "7",
-            "reqd": 1
-        },
-        {
-            "fieldname": "longitude",
-            "fieldtype": "Float",
-            "in_list_view": 1,
-            "label": "Longitude",
-            "precision": "7",
-            "reqd": 1
-        },
-        {
-            "fieldname": "accuracy",
-            "fieldtype": "Float",
-            "label": "Accuracy (meters)"
-        },
-        {
-            "fieldname": "column_break_telemetry",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "speed",
-            "fieldtype": "Float",
-            "label": "Speed (m/s)"
-        },
-        {
-            "fieldname": "heading",
-            "fieldtype": "Float",
-            "label": "Heading (degrees)"
-        },
-        {
-            "fieldname": "altitude",
-            "fieldtype": "Float",
-            "label": "Altitude"
-        },
-        {
-            "fieldname": "time_and_diagnostics_section",
-            "fieldtype": "Section Break",
-            "label": "Time and Diagnostics"
-        },
-        {
-            "fieldname": "captured_at",
-            "fieldtype": "Datetime",
-            "in_list_view": 1,
-            "label": "Captured At",
-            "reqd": 1
-        },
-        {
-            "default": "Now",
-            "fieldname": "received_at",
-            "fieldtype": "Datetime",
-            "label": "Received At",
-            "read_only": 1
-        },
-        {
-            "fieldname": "column_break_diagnostics",
-            "fieldtype": "Column Break"
-        },
-        {
-            "fieldname": "battery_level",
-            "fieldtype": "Int",
-            "label": "Battery Level"
-        },
-        {
-            "fieldname": "network_type",
-            "fieldtype": "Select",
-            "label": "Network Type",
-            "options": "wifi\ncellular\noffline"
-        },
-        {
-            "fieldname": "system_and_control_section",
-            "fieldtype": "Section Break",
-            "label": "System and Control"
-        },
-        {
-            "default": "1",
-            "fieldname": "is_valid",
-            "fieldtype": "Check",
-            "label": "Is Valid"
-        },
-        {
-            "fieldname": "reject_reason",
-            "fieldtype": "Data",
-            "label": "Reject Reason"
-        },
-        {
-            "fieldname": "notes",
-            "fieldtype": "Small Text",
-            "label": "Notes"
-        }
-    ],
-    "index_web_pages_for_search": 1,
-    "is_submittable": 0,
-    "links": [],
-    "modified": "2026-01-07 14:00:00.000000",
-    "modified_by": "Administrator",
-    "module": "Hanif Traders",
-    "name": "Technician Location Log",
-    "naming_rule": "Random",
-    "owner": "Administrator",
-    "permissions": [
-        {
-            "create": 1,
-            "delete": 0,
-            "email": 1,
-            "export": 1,
-            "print": 1,
-            "read": 1,
-            "report": 1,
-            "role": "System Manager",
-            "share": 1,
-            "write": 0
-        }
-    ],
-    "sort_field": "modified",
-    "sort_order": "DESC",
-    "track_changes": 0
+ "actions": [],
+ "autoname": "hash",
+ "creation": "2026-01-07 14:00:00",
+ "default_view": "List",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "identity_section",
+  "technician",
+  "employee",
+  "employee_checkin",
+  "technician_name",
+  "column_break_identity",
+  "device_id",
+  "source",
+  "telemetry_section",
+  "latitude",
+  "longitude",
+  "accuracy",
+  "column_break_telemetry",
+  "speed",
+  "heading",
+  "altitude",
+  "time_and_diagnostics_section",
+  "captured_at",
+  "received_at",
+  "column_break_diagnostics",
+  "battery_level",
+  "network_type",
+  "system_and_control_section",
+  "is_valid",
+  "reject_reason",
+  "notes"
+ ],
+ "fields": [
+  {
+   "fieldname": "identity_section",
+   "fieldtype": "Section Break",
+   "label": "Identity"
+  },
+  {
+   "fieldname": "technician",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Technician",
+   "options": "Technician",
+   "reqd": 1
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee",
+   "read_only": 1
+  },
+  {
+   "fieldname": "employee_checkin",
+   "fieldtype": "Link",
+   "label": "Employee Checkin",
+   "options": "Employee Checkin"
+  },
+  {
+   "fieldname": "column_break_identity",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "device_id",
+   "fieldtype": "Data",
+   "label": "Device ID"
+  },
+  {
+   "fieldname": "source",
+   "fieldtype": "Select",
+   "label": "Source",
+   "options": "foreground\nbackground"
+  },
+  {
+   "fieldname": "telemetry_section",
+   "fieldtype": "Section Break",
+   "label": "Location Telemetry"
+  },
+  {
+   "fieldname": "latitude",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Latitude",
+   "precision": "7",
+   "reqd": 1
+  },
+  {
+   "fieldname": "longitude",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Longitude",
+   "precision": "7",
+   "reqd": 1
+  },
+  {
+   "fieldname": "accuracy",
+   "fieldtype": "Float",
+   "label": "Accuracy (meters)"
+  },
+  {
+   "fieldname": "column_break_telemetry",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "speed",
+   "fieldtype": "Float",
+   "label": "Speed (m/s)"
+  },
+  {
+   "fieldname": "heading",
+   "fieldtype": "Float",
+   "label": "Heading (degrees)"
+  },
+  {
+   "fieldname": "altitude",
+   "fieldtype": "Float",
+   "label": "Altitude"
+  },
+  {
+   "fieldname": "time_and_diagnostics_section",
+   "fieldtype": "Section Break",
+   "label": "Time and Diagnostics"
+  },
+  {
+   "fieldname": "captured_at",
+   "fieldtype": "Datetime",
+   "in_list_view": 1,
+   "label": "Captured At",
+   "reqd": 1
+  },
+  {
+   "default": "Now",
+   "fieldname": "received_at",
+   "fieldtype": "Datetime",
+   "label": "Received At",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_diagnostics",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "battery_level",
+   "fieldtype": "Int",
+   "label": "Battery Level"
+  },
+  {
+   "fieldname": "network_type",
+   "fieldtype": "Select",
+   "label": "Network Type",
+   "options": "wifi\ncellular\noffline"
+  },
+  {
+   "fieldname": "system_and_control_section",
+   "fieldtype": "Section Break",
+   "label": "System and Control"
+  },
+  {
+   "default": "1",
+   "fieldname": "is_valid",
+   "fieldtype": "Check",
+   "label": "Is Valid"
+  },
+  {
+   "fieldname": "reject_reason",
+   "fieldtype": "Data",
+   "label": "Reject Reason"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Small Text",
+   "label": "Notes"
+  },
+  {
+   "fetch_from": "technician.technician_name",
+   "fieldname": "technician_name",
+   "fieldtype": "Data",
+   "label": "Technician Name",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-01-08 13:53:48.781746",
+ "modified_by": "Administrator",
+ "module": "Hanif Traders",
+ "name": "Technician Location Log",
+ "naming_rule": "Random",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
 }

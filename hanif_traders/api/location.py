@@ -128,7 +128,7 @@ def get_latest_locations(on_duty_only=True):
     if on_duty_only:
         tech_filters["employee_id"] = ["in", list(active_checkin_map.keys())]
     
-    technicians = frappe.get_all("Technician", fields=["name", "employee_id"], filters=tech_filters)
+    technicians = frappe.get_all("Technician", fields=["name", "employee_id", "technician_name"], filters=tech_filters)
 
     for tech in technicians:
         checkin_name = active_checkin_map.get(tech.employee_id)
@@ -152,6 +152,7 @@ def get_latest_locations(on_duty_only=True):
         if last_loc:
             results.append({
                 "technician": tech.name,
+                "technician_name": tech.technician_name,
                 "latitude": last_loc.latitude,
                 "longitude": last_loc.longitude,
                 "captured_at": last_loc.captured_at,
