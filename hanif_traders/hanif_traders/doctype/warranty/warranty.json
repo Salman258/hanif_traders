@@ -229,7 +229,7 @@
         {
             "depends_on": "eval:doc.claim_settlement_type == 'Credit Note'",
             "fieldname": "credit_note_details",
-            "fieldtype": "HTML",
+            "fieldtype": "Text Editor",
             "label": "Credit Note Details"
         },
         {

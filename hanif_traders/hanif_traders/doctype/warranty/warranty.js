@@ -14,7 +14,7 @@ frappe.ui.form.on("Warranty", {
                 callback: function (r) {
                     if (r.message) {
                         frm.set_df_property("credit_note_details", "hidden", 0);
-                        frm.fields_dict.credit_note_details.$wrapper.html(r.message);
+                        frm.set_value("credit_note_details", r.message);
                     } else {
                         frm.set_df_property("credit_note_details", "hidden", 1);
                     }

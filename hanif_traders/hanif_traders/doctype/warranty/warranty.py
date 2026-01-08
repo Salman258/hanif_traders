@@ -10,6 +10,12 @@ class Warranty(Document):
 		self.set_pricing_details()
 		self.validate_balances()
 		self.validate_warranty_type()
+
+	def before_save(self):
+		if self.claim_settlement_type == "Credit Note":
+			self.credit_note_details = self.get_credit_note_details_html()
+		else:
+			self.credit_note_details = None
 	
 	def on_submit(self):
 		if self.claim_settlement_type == "Credit Note":
