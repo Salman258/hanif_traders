@@ -155,6 +155,23 @@
     transform: scale(1.2);
 }
 
+/* Custom Map Tooltip Card */
+.leaflet-tooltip.tech-tooltip-card {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    white-space: normal;
+    /* Allow text wrapping if needed */
+}
+
+.leaflet-tooltip-top:before {
+    border-top-color: #ffffff;
+}
+
 /* --- Leaderboard --- */
 .leaderboard-list {
     display: flex;

@@ -205,12 +205,17 @@ class TechnicianDashboard {
                     iconAnchor: [15, 15]
                 });
 
-                var marker = L.marker(latlng, { icon: technician_icon }).bindPopup(`
-                    <div style="font-family:Inter,sans-serif; min-width:150px">
-                        <strong style="font-size:1.1em; color:#374151">${loc.technician}</strong><br>
-                        <span style="color:#6B7280; font-size:0.9em">🕒 ${loc.captured_at}</span>
+                var marker = L.marker(latlng, { icon: technician_icon }).bindTooltip(`
+                    <div style="text-align:center; line-height:1.2;">
+                        <strong style="font-size:1.05em; color:#374151; display:block; margin-bottom:2px;">${loc.technician}</strong>
+                        <span style="color:#6B7280; font-size:0.85em;">🕒 ${loc.captured_at}</span>
                     </div>
-                `);
+                `, {
+                    permanent: true,
+                    direction: 'top',
+                    className: 'tech-tooltip-card',
+                    offset: [0, -15]
+                });
                 this.markers.addLayer(marker);
                 bounds.push(latlng);
             });
