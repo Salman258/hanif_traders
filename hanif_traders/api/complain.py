@@ -2,12 +2,13 @@
 import frappe
 from frappe.utils import today
 from frappe.utils import time_diff_in_hours, now_datetime, get_datetime
+from hanif_traders.api.response import create_response, SUCCESS, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, VALIDATION_ERROR, SERVER_ERROR
 
 @frappe.whitelist()
 def verify_csc(complain_name, input_code):
     user = frappe.session.user
     if not user or user == "Guest":
-        return {"ok": False, "message": "Unauthorized"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
 
     complaint = frappe.get_doc("Complain", complain_name)
     tech = complaint.assigned_to_technician
@@ -44,13 +45,13 @@ def verify_csc(complain_name, input_code):
     # Update Avg Resolution Time
     update_avg_resolution_time(tech)
 
-    return {"ok": True, "message": f"{complain_name} marked 'CSC Verified'. {msg}"}
+    return create_response(message=f"{complain_name} marked 'CSC Verified'. {msg}")
 
 @frappe.whitelist()
 def mark_resolved_without_csc(complain_name):
     user = frappe.session.user
     if not user or user == "Guest":
-        return {"ok": False, "message": "Unauthorized"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
 
     complaint = frappe.get_doc("Complain", complain_name)
     if not complaint.assigned_to_technician:
@@ -65,13 +66,14 @@ def mark_resolved_without_csc(complain_name):
     
     # Update Avg Resolution Time
     update_avg_resolution_time(complaint.assigned_to_technician)
-    return {"ok": True, "message": f"Resolved without CSC. {msg}"}
+    update_avg_resolution_time(complaint.assigned_to_technician)
+    return create_response(message=f"Resolved without CSC. {msg}")
 
 @frappe.whitelist()
 def bulk_assign(complain_names, technician):
     user = frappe.session.user
     if not user or user == "Guest":
-        return {"ok": False, "message": "Unauthorized"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
 
     import json
     if isinstance(complain_names, str):
@@ -99,13 +101,17 @@ def bulk_assign(complain_names, technician):
     if errors:
         msg += f" {len(errors)} failed (check Error Log)."
     
-    return {"ok": True, "message": msg}
+    msg = f"{success_count} complaints assigned."
+    if errors:
+        msg += f" {len(errors)} failed (check Error Log)."
+    
+    return create_response(message=msg)
 
 @frappe.whitelist()
 def get_complains(status=None):
     user = frappe.session.user
     if not user or user == "Guest":
-        return {"ok": False, "message": "Unauthorized"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
     
     employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
     technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
@@ -131,13 +137,13 @@ def get_complains(status=None):
         if "complain_csc" in complain:
             del complain["complain_csc"]
             
-    return {"status": "success", "data": complains}
+    return create_response(data=complains)
 
 @frappe.whitelist()
 def get_complain_count(status=None):
     user = frappe.session.user
     if not user or user == "Guest":
-        return {"ok": False, "message": "Unauthorized"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
     
     employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
     technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
@@ -154,4 +160,4 @@ def get_complain_count(status=None):
             filters["workflow_state"] = status
 
     count = frappe.db.count("Complain", filters=filters)
-    return {"status": "success", "count": count}
+    return create_response(data=count, meta={"count": count})

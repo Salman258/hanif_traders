@@ -4,27 +4,6 @@
 frappe.ui.form.on("Warranty", {
     refresh(frm) {
         frm.trigger("set_item_query");
-        // frm.trigger("render_credit_note_details"); // Redundant: handled by server-side before_save
-    },
-    render_credit_note_details(frm) {
-        if (frm.doc.claim_settlement_type === "Credit Note" && !frm.is_new()) {
-            frappe.call({
-                method: "get_credit_note_details_html",
-                doc: frm.doc,
-                callback: function (r) {
-                    if (r.message) {
-                        frm.set_df_property("credit_note_details", "hidden", 0);
-                        if (frm.doc.credit_note_details !== r.message) {
-                            frm.set_value("credit_note_details", r.message);
-                        }
-                    } else {
-                        frm.set_df_property("credit_note_details", "hidden", 1);
-                    }
-                }
-            });
-        } else {
-            frm.set_df_property("credit_note_details", "hidden", 1);
-        }
     },
     item_group(frm) {
         frm.trigger("set_item_query");

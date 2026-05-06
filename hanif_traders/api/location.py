@@ -1,6 +1,7 @@
 import frappe
 from frappe.utils import now_datetime, get_datetime, getdate
 from datetime import datetime, time
+from hanif_traders.api.response import create_response, SUCCESS, UNAUTHORIZED, VALIDATION_ERROR, OFF_DUTY, DUTY_EXPIRED, NOT_FOUND, SERVER_ERROR
 
 @frappe.whitelist(methods=["POST"])
 def ingest(latitude, longitude, accuracy=None, speed=None, heading=None, altitude=None, captured_at=None, device_id=None, source="foreground"):
@@ -9,16 +10,16 @@ def ingest(latitude, longitude, accuracy=None, speed=None, heading=None, altitud
     """
     user = frappe.session.user
     if not user or user == "Guest":
-        return {"status": "fail", "message": "Unauthorized"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
 
     try:
         latitude = float(latitude)
         longitude = float(longitude)
     except Exception:
-        return {"status": "fail", "message": "Invalid latitude/longitude"}
+        return create_response(success=False, code=VALIDATION_ERROR, message="Invalid latitude/longitude")
 
     if not (-90 <= latitude <= 90 and -180 <= longitude <= 180):
-        return {"status": "fail", "message": "Coordinates out of range"}
+        return create_response(success=False, code=VALIDATION_ERROR, message="Coordinates out of range")
 
     # 1. Resolve Identity
     employee = (
@@ -28,11 +29,11 @@ def ingest(latitude, longitude, accuracy=None, speed=None, heading=None, altitud
     )
     
     if not employee:
-        return {"status": "fail", "message": "Employee not found"}
+        return create_response(success=False, code=NOT_FOUND, message="Employee not found")
 
     technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
     if not technician:
-         return {"status": "fail", "message": "Technician not found"}
+         return create_response(success=False, code=NOT_FOUND, message="Technician profile not found")
 
     # 2. Verify Duty State
     # We need the active checkin to link it.
@@ -44,10 +45,10 @@ def ingest(latitude, longitude, accuracy=None, speed=None, heading=None, altitud
     )
 
     if not last_checkin or last_checkin.log_type != "IN":
-        return {"status": "fail", "message": "Technician is OFF DUTY"}
+        return create_response(success=False, code=OFF_DUTY, message="Technician is OFF DUTY")
 
     if getdate(last_checkin.time) != getdate(now_datetime()):
-        return {"status": "fail", "message": "Duty expired. Please check in again."}
+        return create_response(success=False, code=DUTY_EXPIRED, message="Duty expired. Please check in again.")
 
     if captured_at:
         try:
@@ -83,14 +84,16 @@ def ingest(latitude, longitude, accuracy=None, speed=None, heading=None, altitud
         
         log.insert(ignore_permissions=True)
         
-        return {"status": "success"}
+        log.insert(ignore_permissions=True)
+        
+        return create_response(message="Location ingested")
 
     except Exception as e:
         frappe.log_error(
             title="Location Ingest Error",
             message=frappe.get_traceback(),
         )
-        return {"status": "fail", "message": "Internal Server Error"}
+        return create_response(success=False, code=SERVER_ERROR, message="Internal Server Error")
 
 @frappe.whitelist()
 def get_latest_locations(on_duty_only=True):
@@ -122,7 +125,7 @@ def get_latest_locations(on_duty_only=True):
             active_checkin_map[ci.employee] = ci.name
 
     if on_duty_only and not active_checkin_map:
-        return {"status": "success", "data": []}
+        return create_response(data=[])
 
     tech_filters = {}
     if on_duty_only:
@@ -158,7 +161,7 @@ def get_latest_locations(on_duty_only=True):
                 "captured_at": last_loc.captured_at,
             })
             
-    return {"status": "success", "data": results}
+    return create_response(data=results, meta={"count": len(results)})
 
 @frappe.whitelist()
 def get_route(technician, date=None, employee_checkin=None):
@@ -180,7 +183,7 @@ def get_route(technician, date=None, employee_checkin=None):
         limit=5000 
     )
     
-    return {"status": "success", "data": points}
+    return create_response(data=points, meta={"count": len(points)})
 
 @frappe.whitelist()
 def get_distance_summary(technician=None, period=None):
@@ -191,4 +194,4 @@ def get_distance_summary(technician=None, period=None):
     # Instruction says "No live computation".
     # Since we haven't built the summarizer yet, return empty.
     
-    return {"status": "success", "data": []}
+    return create_response(data=[])

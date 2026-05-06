@@ -88,3 +88,6 @@ class Complain(Document):
 		
 		if old and old.assigned_to_technician != self.assigned_to_technician and old.assigned_to_technician and self.assigned_to_technician:
 			self.add_comment("Comment", f"Technician changed from <b>{old_name}</b> to <b>{new_name}</b>")
+
+
+	

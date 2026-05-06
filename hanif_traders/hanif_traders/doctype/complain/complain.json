@@ -2,7 +2,7 @@
  "actions": [],
  "allow_import": 1,
  "allow_rename": 1,
- "autoname": "format:CP{YY}{MM}{#####}",
+ "autoname": "prompt",
  "creation": "2025-06-06 12:18:16.163609",
  "default_view": "List",
  "doctype": "DocType",
@@ -147,7 +147,7 @@
    "fieldtype": "Select",
    "hidden": 1,
    "label": "Status",
-   "options": "CSC Verified\nOpen\nAssigned\nResolved\nClosed"
+   "options": "CSC Verified\nOpen\nAssigned\nResolved\nClosed\nTerminated"
   },
   {
    "fieldname": "resolution_date",
@@ -209,12 +209,12 @@
    "link_fieldname": "territory_name"
   }
  ],
- "modified": "2026-01-07 17:33:34.668603",
+ "modified": "2026-05-05 14:52:27.252116",
  "modified_by": "Administrator",
  "module": "Hanif Traders",
  "name": "Complain",
  "name_case": "UPPER CASE",
- "naming_rule": "Expression",
+ "naming_rule": "Set by user",
  "owner": "Administrator",
  "permissions": [
   {

@@ -1,6 +1,7 @@
 import frappe
 from datetime import datetime, time
 from frappe.utils import getdate, today, date_diff, now_datetime, add_to_date, get_datetime
+from hanif_traders.api.response import create_response, SUCCESS, UNAUTHORIZED, NOT_FOUND, SERVER_ERROR
 
 def calculate_age(doc, method):
     if doc.date_of_birth:
@@ -73,7 +74,7 @@ def sync_technician_details(doc, method):
 def employee_checkin(log_type, latitude=None, longitude=None, device_id=None):
     user = frappe.session.user
     if not user or user == "Guest":
-         return {"status": "fail", "message": "Unauthorized"}
+         return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
     
     employee_name = frappe.db.get_value("Employee", {"user_id": user}, "name")
     if not employee_name:
@@ -83,7 +84,7 @@ def employee_checkin(log_type, latitude=None, longitude=None, device_id=None):
          employee_name = frappe.db.get_value("Employee", {"personal_email": user}, "name")
          
     if not employee_name:
-         return {"status": "fail", "message": "Employee not found for this user."}
+         return create_response(success=False, code=NOT_FOUND, message="Employee not found")
 
     try:
         checkin = frappe.new_doc("Employee Checkin")
@@ -97,10 +98,10 @@ def employee_checkin(log_type, latitude=None, longitude=None, device_id=None):
             checkin.longitude = longitude
         
         checkin.insert(ignore_permissions=True)
-        return {"status": "success", "message": f"Checkin successful: {log_type}", "data": checkin.as_dict()}
+        return create_response(message=f"Checkin successful: {log_type}", data=checkin.as_dict())
     except Exception as e:
         frappe.log_error("Employee Checkin Error", str(e))
-        return {"status": "fail", "message": str(e)}
+        return create_response(success=False, code=SERVER_ERROR, message=str(e))
 
 @frappe.whitelist()
 def auto_checkout_employees():

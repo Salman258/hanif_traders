@@ -1,5 +1,6 @@
 import frappe
 from frappe import _
+from hanif_traders.api.response import create_response
 
 @frappe.whitelist()
 def get_stock_balance(item_code=None, item_group=None, warehouse=None):
@@ -50,4 +51,4 @@ def get_stock_balance(item_code=None, item_group=None, warehouse=None):
             item_doc = frappe.get_doc("Item", i.name)
             add_bin_results(item_doc, wh_filter=warehouse)
 
-    return results
+    return create_response(data=results, meta={"count": len(results)})

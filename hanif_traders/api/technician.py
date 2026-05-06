@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import today, flt
+from hanif_traders.api.response import create_response, SUCCESS, UNAUTHORIZED, NOT_FOUND, OFF_DUTY
 
 def process_incentive(complain_name, reason):
     complaint = frappe.get_doc("Complain", complain_name)
@@ -193,7 +194,7 @@ def get_technician_profile():
     email = frappe.session.user
 
     if not email:
-        return {"status": "fail", "message": "Email is required"}
+        return create_response(success=False, code=UNAUTHORIZED, message="Email is required")
         
     employee_name = frappe.db.get_value("Employee", {"user_id": email}, "name")
     if not employee_name:
@@ -202,29 +203,30 @@ def get_technician_profile():
         employee_name = frappe.db.get_value("Employee", {"personal_email": email}, "name")
     
     if not employee_name:
-        return {"status": "fail", "message": "No Employee found with this email"}
+        return create_response(success=False, code=NOT_FOUND, message="No Employee found with this email")
 
     tech_name = frappe.db.get_value("Technician", {"employee_id": employee_name}, "name")
 
     if not tech_name:
-        return {"status": "fail", "message": "No Technician profile found for this Employee"}
+        return create_response(success=False, code=NOT_FOUND, message="No Technician profile found for this Employee")
 
-    return {"status": "success", "profile": frappe.get_doc("Technician", tech_name).as_dict()}
+    return create_response(message="Technician profile loaded", data={"profile": frappe.get_doc("Technician", tech_name).as_dict()})
 
 @frappe.whitelist()
 def duty_status():
     user = frappe.session.user
     if not user or user == "Guest":
-         return {"status": "fail", "message": "Unauthorized"}
+         return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
     
     employee_name = frappe.db.get_value("Employee", {"user_id": user}, "name")
     if not employee_name:
+         # Try other emails if user_id match fails
          employee_name = frappe.db.get_value("Employee", {"company_email": user}, "name")
     if not employee_name:
          employee_name = frappe.db.get_value("Employee", {"personal_email": user}, "name")
          
     if not employee_name:
-         return {"status": "fail", "message": "Employee not found for this user."}
+         return create_response(success=False, code=NOT_FOUND, message="Employee not found for this user.")
 
     last_checkin = frappe.db.get_value("Employee Checkin", 
         {"employee": employee_name}, 
@@ -236,7 +238,7 @@ def duty_status():
     if last_checkin and last_checkin == "IN":
         status = "ON DUTY"
 
-    return {"status": "success", "duty_status": status}
+    return create_response(data={"duty_status": status})
 
 
 

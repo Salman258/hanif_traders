@@ -86,8 +86,7 @@
             "fieldtype": "Data",
             "in_list_view": 1,
             "label": "Name",
-            "read_only": 1,
-            "unique": 1
+            "read_only": 1
         },
         {
             "fetch_from": "employee_id.custom_age",

@@ -233,7 +233,6 @@ class Warranty(Document):
 					row.rate = row.price_list_rate * (1 - (row.discount / 100))
 					row.amount = flt(row.rate) * flt(row.quantity_claimed)
 
-	@frappe.whitelist()
 	def get_credit_note_details_html(self):
 		if self.claim_settlement_type != "Credit Note":
 			return None
@@ -256,7 +255,7 @@ class Warranty(Document):
 						<td>{description}</td>
 						<td style="text-align: right;">{flt(row.quantity_claimed, 2)}</td>
 						<td style="text-align: right;">{frappe.format(row.price_list_rate, "Currency", currency=currency)}</td>
-						<td style="text-align: right;">{flt(row.discount)}%</td>
+						<td style="text-align: right;">{flt(row.discount, 2)}%</td>
 						<td style="text-align: right;">{frappe.format(row.rate, "Currency", currency=currency)}</td>
 						<td style="text-align: right;">{frappe.format(row.amount, "Currency", currency=currency)}</td>
 					</tr>

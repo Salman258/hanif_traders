@@ -1,5 +1,6 @@
 import frappe
 from frappe.utils import now_datetime
+from hanif_traders.api.response import create_response, SUCCESS, UNAUTHORIZED, VALIDATION_ERROR
 
 @frappe.whitelist(allow_guest=True)
 def request_mobile_access(email, device_name=None, device_id=None):
@@ -21,11 +22,13 @@ def request_mobile_access(email, device_name=None, device_id=None):
 
 	existing_request = frappe.db.get_value("Mobile Access Request", {"employee": employee, "device_id": device_id, "status": "Pending"}, "name")
 	if existing_request:
-		return {
-			"status": "pending",
-			"request_name": existing_request,
-			"message": "Access request already pending approval",
-		}
+		return create_response(
+			message="Access request already pending approval",
+			data={
+				"status": "pending",
+				"request_name": existing_request,
+			}
+		)
 
 	doc = frappe.new_doc("Mobile Access Request")
 	doc.employee = employee
@@ -35,7 +38,7 @@ def request_mobile_access(email, device_name=None, device_id=None):
 	doc.requested_on = now_datetime()
 	doc.insert(ignore_permissions=True)
 
-	return {"message": "Request created successfully", "request_name": doc.name}
+	return create_response(message="Request created successfully", data={"request_name": doc.name})
 
 @frappe.whitelist(allow_guest=True)
 def check_request_status(request_name, device_id):
@@ -45,21 +48,21 @@ def check_request_status(request_name, device_id):
     """
 
     if not request_name or not device_id:
-        frappe.throw("Invalid request")
+        return create_response(success=False, code=VALIDATION_ERROR, message="Invalid request")
 
     try:
         doc = frappe.get_doc("Mobile Access Request", request_name)
     except frappe.DoesNotExistError:
-        frappe.throw("Invalid request")
+        return create_response(success=False, code=VALIDATION_ERROR, message="Invalid request")
 
     if doc.device_id != device_id:
-        frappe.throw("Invalid request")
+        return create_response(success=False, code=VALIDATION_ERROR, message="Invalid request")
 
-    response = {"status": doc.status}
+    data = {"status": doc.status}
 
     # Deliver token ONCE
     if doc.status == "Approved" and not doc.token_delivered:
-        response.update({
+        data.update({
             "erp_user": doc.erp_user,
             "api_key": doc.api_key,
             "api_secret": doc.get_password("api_secret"),
@@ -71,4 +74,4 @@ def check_request_status(request_name, device_id):
             "api_secret": None,
         }, update_modified=False)
 
-    return response
+    return create_response(data=data)
