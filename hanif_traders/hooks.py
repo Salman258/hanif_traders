@@ -42,7 +42,7 @@ fixtures = [
     },
     {
         "dt": "Workflow State",
-        "filters": [["workflow_state_name", "in", ["CSC Verified"]]]
+        "filters": [["workflow_state_name", "in", ["CSC Verified", "Terminated"]]]
     },
     {
         "dt": "Number Card",

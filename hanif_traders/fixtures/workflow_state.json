@@ -3,6 +3,15 @@
   "docstatus": 0,
   "doctype": "Workflow State",
   "icon": "",
+  "modified": "2026-05-05 15:14:29.330262",
+  "name": "Terminated",
+  "style": "",
+  "workflow_state_name": "Terminated"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
   "modified": "2025-07-12 14:37:15.344640",
   "name": "CSC Verified",
   "style": "",
