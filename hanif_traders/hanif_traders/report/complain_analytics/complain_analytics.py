@@ -43,28 +43,23 @@ def get_data(filters):
 
 	# Calculate dynamic time for Open/Assigned complaints
 	from frappe.utils import time_diff_in_hours, now_datetime, get_datetime
-	
+
 	for row in data:
 		if row.workflow_state in ["Open", "Assigned"]:
-			if row.date and row.get("posting_time"): # posting_time might not be in select if not fetched, but it is in query
-				# We need posting_time in the SELECT query above, which it is.
-				# row.date is a date object, row.posting_time is a timedelta or time string
+			if row.date and row.get("posting_time"):
 				start_time = get_datetime(f"{row.date} {row.get('posting_time', '00:00:00')}")
 			else:
-				# Fallback if date/time missing (shouldn't happen based on schema)
 				start_time = get_datetime(row.date) if row.date else now_datetime()
 
-			time_taken = time_diff_in_hours(now_datetime(), start_time)
-			hours = int(time_taken)
-			minutes = (time_taken - hours) * 60
-			row.time_to_resolution = hours + (minutes / 100)
+			row.time_to_resolution = round(time_diff_in_hours(now_datetime(), start_time), 2)
 
 	return data
 
 def get_conditions(filters):
 	conditions = ""
+	date_field = filters.get("date_field") if filters.get("date_field") in ("date", "resolution_date") else "date"
 	if filters.get("from_date") and filters.get("to_date"):
-		conditions += " AND date BETWEEN %(from_date)s AND %(to_date)s"
+		conditions += f" AND {date_field} BETWEEN %(from_date)s AND %(to_date)s"
 	if filters.get("technician"):
 		conditions += " AND assigned_to_technician = %(technician)s"
 	if filters.get("complainer_phone"):
@@ -110,20 +105,10 @@ def get_report_summary(data):
 			resolved_complains += 1
 			val = row.get("time_to_resolution")
 			if val:
-				# Convert Hours.Minutes (1.30) back to Decimal (1.5) for summation
-				hours = int(val)
-				minutes = (val - hours) * 100
-				decimal_val = hours + (minutes / 60)
-				
-				total_time += decimal_val
+				total_time += val
 				resolved_count_for_avg += 1
 
-	avg_decimal = total_time / resolved_count_for_avg if resolved_count_for_avg > 0 else 0
-	
-	# Convert Average back to Hours.Minutes
-	avg_h = int(avg_decimal)
-	avg_m = (avg_decimal - avg_h) * 60
-	avg_time = avg_h + (avg_m / 100)
+	avg_time = total_time / resolved_count_for_avg if resolved_count_for_avg > 0 else 0
 
 	return [
 		{
@@ -139,9 +124,9 @@ def get_report_summary(data):
 			"datatype": "Int",
 		},
 		{
-			"value": f"{avg_time:.2f}",
+			"value": f"{int(avg_time)}h {round((avg_time - int(avg_time)) * 60)}m",
 			"indicator": "Orange",
-			"label": _("Avg Resolution Time (Hrs)"),
-			"datatype": "Float",
+			"label": _("Avg Resolution Time"),
+			"datatype": "Data",
 		}
 	]

@@ -10,12 +10,9 @@ frappe.ui.form.on('Complain', {
             const now = new Date();
             const diff_ms = now - start_time;
             const total_hours = diff_ms / (1000 * 60 * 60);
-            const hours = Math.floor(total_hours);
-            const minutes = (total_hours - hours) * 60;
-            const formatted_time = hours + (minutes / 100);
 
             // Update directly to avoid 'unsaved changes' (dirty) state
-            frm.doc.time_to_resolution = parseFloat(formatted_time.toFixed(2));
+            frm.doc.time_to_resolution = parseFloat(total_hours.toFixed(2));
             frm.refresh_field('time_to_resolution');
         }
 

@@ -34,12 +34,7 @@ class Complain(Document):
 			else:
 				start_time = self.creation
 
-			time_taken = time_diff_in_hours(now_datetime(), start_time)
-			
-			# Convert to Hours.Minutes (e.g., 1.5 hours -> 1.30)
-			hours = int(time_taken)
-			minutes = (time_taken - hours) * 60
-			self.time_to_resolution = hours + (minutes / 100)
+			self.time_to_resolution = round(time_diff_in_hours(now_datetime(), start_time), 2)
 
 	def on_update(self):
 		old = self.get_doc_before_save()

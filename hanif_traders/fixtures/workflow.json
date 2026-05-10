@@ -4,7 +4,7 @@
   "doctype": "Workflow",
   "document_type": "Complain",
   "is_active": 1,
-  "modified": "2025-12-14 17:47:53.758723",
+  "modified": "2026-05-05 23:54:43.948541",
   "name": "Complain Workflow",
   "override_status": 0,
   "send_email_alert": 0,
@@ -104,6 +104,22 @@
     "update_field": "status",
     "update_value": "CSC Verified",
     "workflow_builder_id": null
+   },
+   {
+    "allow_edit": "Support Manager",
+    "avoid_status_override": 0,
+    "doc_status": "1",
+    "is_optional_state": 0,
+    "message": null,
+    "next_action_email_template": null,
+    "parent": "Complain Workflow",
+    "parentfield": "states",
+    "parenttype": "Workflow",
+    "send_email": 1,
+    "state": "Terminated",
+    "update_field": "status",
+    "update_value": "Terminated",
+    "workflow_builder_id": null
    }
   ],
   "transitions": [
@@ -183,6 +199,32 @@
     "parenttype": "Workflow",
     "send_email_to_creator": 0,
     "state": "Resolved",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "De-Assign",
+    "allow_self_approval": 1,
+    "allowed": "Support Team",
+    "condition": null,
+    "next_state": "Open",
+    "parent": "Complain Workflow",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "send_email_to_creator": 0,
+    "state": "Assigned",
+    "workflow_builder_id": null
+   },
+   {
+    "action": "Terminate",
+    "allow_self_approval": 1,
+    "allowed": "Support Team",
+    "condition": null,
+    "next_state": "Terminated",
+    "parent": "Complain Workflow",
+    "parentfield": "transitions",
+    "parenttype": "Workflow",
+    "send_email_to_creator": 0,
+    "state": "Assigned",
     "workflow_builder_id": null
    }
   ],

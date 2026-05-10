@@ -29,14 +29,9 @@ def verify_csc(complain_name, input_code):
     else:
         start_time = complaint.creation
 
-    time_taken = time_diff_in_hours(now_datetime(), start_time)
-    
-    # Convert to Hours.Minutes (e.g., 1.5 hours -> 1.30)
-    hours = int(time_taken)
-    minutes = (time_taken - hours) * 60
-    formatted_time = hours + (minutes / 100)
+    time_taken = round(time_diff_in_hours(now_datetime(), start_time), 2)
 
-    frappe.db.set_value("Complain", complain_name, "time_to_resolution", formatted_time, update_modified=False)
+    frappe.db.set_value("Complain", complain_name, "time_to_resolution", time_taken, update_modified=False)
 
     # Process Incentives
     from hanif_traders.api.technician import process_incentive, update_avg_resolution_time

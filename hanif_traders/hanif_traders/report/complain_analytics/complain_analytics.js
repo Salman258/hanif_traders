@@ -4,6 +4,17 @@
 frappe.query_reports["Complain Analytics"] = {
     "filters": [
         {
+            "fieldname": "date_field",
+            "label": __("Filter By"),
+            "fieldtype": "Select",
+            "options": [
+                { "value": "date", "label": __("Date") },
+                { "value": "resolution_date", "label": __("Resolution Date") }
+            ],
+            "default": "date",
+            "reqd": 1
+        },
+        {
             "fieldname": "from_date",
             "label": __("From Date"),
             "fieldtype": "Date",
@@ -44,7 +55,9 @@ frappe.query_reports["Complain Analytics"] = {
     formatter: function (value, row, column, data, default_formatter) {
         if (column.fieldname === "time_to_resolution" && value != null) {
             const time = parseFloat(value) || 0;
-            const display = time.toFixed(2);
+            const h = Math.floor(time);
+            const m = Math.round((time - h) * 60);
+            const display = `${h}h ${m}m`;
 
             let bg = "#80ff80ff";
             if (time > 24 && time <= 48) bg = "#FFD700";
