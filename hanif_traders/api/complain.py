@@ -156,3 +156,19 @@ def get_complain_count(status=None):
 
     count = frappe.db.count("Complain", filters=filters)
     return create_response(data=count, meta={"count": count})
+
+
+@frappe.whitelist()
+def update_closing_remarks(complain_name, closing_remarks):
+    user = frappe.session.user
+    if not user or user == "Guest":
+        return create_response(success=False, code=UNAUTHORIZED, message="Authentication required")
+
+    if not complain_name:
+        return create_response(success=False, code=VALIDATION_ERROR, message="complain_name is required")
+
+    if not frappe.db.exists("Complain", complain_name):
+        return create_response(success=False, code=NOT_FOUND, message="Complain not found")
+
+    frappe.db.set_value("Complain", complain_name, "closing_remarks", closing_remarks or "")
+    return create_response(message="Closing remarks updated", data={"closing_remarks": closing_remarks or ""})
