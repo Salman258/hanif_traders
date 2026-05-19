@@ -19,12 +19,23 @@ support public self-registration.
 
 ## How to Request Deletion
 
-To request deletion of your account and your personal data, please send an
-email to:
+You can request deletion of your account in either of the following ways.
 
-**[info@haniftraders.com](mailto:info@haniftraders.com)**
+### Option 1 — Self-service (recommended)
 
-In your email, please include the following so we can locate your record:
+1. Sign in to the Hanif Traders portal at
+   **[https://admin.haniftraders.com/me](https://admin.haniftraders.com/me)**
+   using the same email address you use in the app.
+2. Click **Delete Account** under "Request Account Deletion".
+3. Confirm the request when prompted.
+
+This will queue an account deletion request that an administrator will
+process.
+
+### Option 2 — By email
+
+If you are unable to access the portal, please email us at
+**[info@haniftraders.com](mailto:info@haniftraders.com)** with:
 
 1. Subject line: **"Account Deletion Request — Hanif Traders Technician"**
 2. Your full name as recorded in our Employee records
@@ -32,7 +43,9 @@ In your email, please include the following so we can locate your record:
 4. Confirmation that you wish your account and associated personal data
    to be deleted
 
-We will acknowledge your request within **5 business days** and complete
+### Timeline
+
+We will acknowledge any request within **5 business days** and complete
 the deletion within **30 days** of receipt, subject to the retention
 requirements described below.
 
