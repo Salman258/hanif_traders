@@ -19,7 +19,8 @@
         "employee_id",
         "technician_points",
         "incentive_earned",
-        "avg_time_to_resolution"
+        "avg_time_to_resolution",
+        "is_test_account"
     ],
     "fields": [
         {
@@ -105,6 +106,14 @@
             "fieldtype": "Float",
             "label": "Average Resolution Time (Hours)",
             "read_only": 1
+        },
+        {
+            "default": "0",
+            "description": "Sandbox account used for Google Play review. Only sees complaints assigned to it; SMS/incentives skipped.",
+            "fieldname": "is_test_account",
+            "fieldtype": "Check",
+            "label": "Is Test Account",
+            "no_copy": 1
         }
     ],
     "grid_page_length": 50,

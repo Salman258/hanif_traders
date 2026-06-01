@@ -73,7 +73,13 @@ class Complain(Document):
 			mark_resolved_without_csc(self.name)
 			#frappe.db.set_value("Complain", self.name, "resolution_date", today(), update_modified=False)
 		
-		if msg:
+		# Suppress SMS dispatch for the Google Play reviewer sandbox technician
+		# so demo actions don't text real customers / synthetic phone numbers.
+		is_test_tech = self.assigned_to_technician and frappe.db.get_value(
+			"Technician", self.assigned_to_technician, "is_test_account"
+		)
+
+		if msg and not is_test_tech:
 			try:
 				from frappe.core.doctype.sms_settings.sms_settings import send_sms
 				send_sms(receiver_list=[to_number], msg=msg)

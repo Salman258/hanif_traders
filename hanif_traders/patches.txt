@@ -7,3 +7,4 @@
 hanif_traders.patches.migrate_warranty_warehouses
 hanif_traders.patches.migrate_warranty_references
 hanif_traders.patches.migrate_time_to_resolution_format
+hanif_traders.patches.seed_review_sandbox

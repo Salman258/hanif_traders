@@ -110,10 +110,13 @@ def get_complains(status=None):
     
     employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
     technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
+    is_test = technician and frappe.db.get_value("Technician", technician, "is_test_account")
 
     filters = {}
-    
-    if status != "Open":
+
+    # Sandbox technicians never see the global Open pool — they only ever see
+    # complaints assigned to themselves (synthetic data).
+    if status != "Open" or is_test:
         filters["assigned_to_technician"] = technician
 
     if status:
@@ -142,10 +145,11 @@ def get_complain_count(status=None):
     
     employee = frappe.db.get_value("Employee", {"user_id": user}, "name")
     technician = frappe.db.get_value("Technician", {"employee_id": employee}, "name")
+    is_test = technician and frappe.db.get_value("Technician", technician, "is_test_account")
 
     filters = {}
-    
-    if status != "Open":
+
+    if status != "Open" or is_test:
         filters["assigned_to_technician"] = technician
 
     if status:

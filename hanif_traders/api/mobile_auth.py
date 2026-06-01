@@ -2,6 +2,23 @@ import frappe
 from frappe.utils import now_datetime
 from hanif_traders.api.response import create_response, SUCCESS, UNAUTHORIZED, VALIDATION_ERROR
 
+# Email reserved for the Google Play reviewer sandbox account.
+# Requests from this email are auto-approved against a pre-seeded Technician
+# whose data is fully synthetic. See hanif_traders/patches/seed_review_sandbox.py.
+TEST_ACCOUNT_EMAIL = "google.reviewer@haniftraders.com"
+
+
+def _auto_approve_if_test(request_doc, email):
+	"""Auto-approves a Mobile Access Request when the email matches the
+	Play Console reviewer sandbox account, so reviewers don't need a human
+	to approve their device. Safe to call multiple times."""
+	if email != TEST_ACCOUNT_EMAIL or request_doc.status == "Approved":
+		return
+	request_doc.status = "Approved"
+	request_doc.save(ignore_permissions=True)
+	frappe.db.commit()
+
+
 @frappe.whitelist(allow_guest=True)
 def request_mobile_access(email, device_name=None, device_id=None):
 	"""
@@ -16,12 +33,14 @@ def request_mobile_access(email, device_name=None, device_id=None):
 		employee = frappe.db.get_value("Employee", {"company_email": email}, "name")
 	if not employee:
 		employee = frappe.db.get_value("Employee", {"personal_email": email}, "name")
-	
+
 	if not employee:
 		frappe.throw("Unable to process request.")
 
 	existing_request = frappe.db.get_value("Mobile Access Request", {"employee": employee, "device_id": device_id, "status": "Pending"}, "name")
 	if existing_request:
+		existing_doc = frappe.get_doc("Mobile Access Request", existing_request)
+		_auto_approve_if_test(existing_doc, email)
 		return create_response(
 			message="Access request already pending approval",
 			data={
@@ -37,6 +56,8 @@ def request_mobile_access(email, device_name=None, device_id=None):
 	doc.status = "Pending"
 	doc.requested_on = now_datetime()
 	doc.insert(ignore_permissions=True)
+
+	_auto_approve_if_test(doc, email)
 
 	return create_response(message="Request created successfully", data={"request_name": doc.name})
 
