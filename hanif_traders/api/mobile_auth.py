@@ -11,12 +11,23 @@ TEST_ACCOUNT_EMAIL = "google.reviewer@haniftraders.com"
 def _auto_approve_if_test(request_doc, email):
 	"""Auto-approves a Mobile Access Request when the email matches the
 	Play Console reviewer sandbox account, so reviewers don't need a human
-	to approve their device. Safe to call multiple times."""
+	to approve their device. Safe to call multiple times.
+
+	Runs as Administrator because the approval chain calls
+	frappe.core.doctype.user.user.generate_keys, which writes
+	User.api_secret and requires User write permission — not available
+	to the Guest session the mobile auth endpoint runs under.
+	"""
 	if email != TEST_ACCOUNT_EMAIL or request_doc.status == "Approved":
 		return
-	request_doc.status = "Approved"
-	request_doc.save(ignore_permissions=True)
-	frappe.db.commit()
+	original_user = frappe.session.user
+	try:
+		frappe.set_user("Administrator")
+		request_doc.status = "Approved"
+		request_doc.save(ignore_permissions=True)
+		frappe.db.commit()
+	finally:
+		frappe.set_user(original_user)
 
 
 @frappe.whitelist(allow_guest=True)
